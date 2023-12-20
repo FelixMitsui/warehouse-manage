@@ -1,0 +1,30 @@
+//margin config
+@mixin generate-margin($property, $direction) {
+
+    @for $i from 1 through 6 {
+
+        .#{$direction}-#{$i} {
+            #{$property}: $i*0.50rem;
+        }
+    }
+}
+
+@include generate-margin(margin-left, 'ms');
+@include generate-margin(margin-right, 'me');
+@include generate-margin(margin-top, 'mt');
+@include generate-margin(margin-bottom, 'mb');
+
+@mixin generate-padding($property, $direction) {
+
+    @for $i from 1 through 6 {
+
+        .#{$direction}-#{$i} {
+            #{$property}: $i*0.50rem;
+        }
+    }
+}
+
+@include generate-margin(padding-left, 'ps');
+@include generate-margin(padding-right, 'pe');
+@include generate-margin(padding-top, 'pt');
+@include generate-margin(padding-bottom, 'pb');
