@@ -68,5 +68,4 @@ const createItems = () => {
 
 const items = createItems()
 </script>
-<style lang="scss">
-</style>
+<style lang="scss"></style>

@@ -96,9 +96,9 @@ const login = async () => {
 
   button {
     width: 100%;
-    background: #00AEAE;
+    background: #00aeae;
     &:hover {
-      background:#08c5c5;
+      background: #08c5c5;
     }
   }
   .el-form-item__label {
