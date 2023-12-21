@@ -5,6 +5,7 @@ const request = axios.create({
   url: import.meta.env.VITE_APP_BASE_API,
   baseURL: import.meta.env.VITE_SERVE,
   timeout: 5000,
+  withCredentials: true,
 })
 
 request.interceptors.request.use((config) => {
