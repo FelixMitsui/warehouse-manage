@@ -1,11 +1,8 @@
 import axios, { AxiosResponse } from 'axios'
 import { ElMessage } from 'element-plus'
-
+console.log(import.meta.env.VITE_SERVE)
 const request = axios.create({
-  url:
-    import.meta.env.NODE_ENV === 'production'
-      ? import.meta.env.VITE_SERVE
-      : 'http://localhost:5000',
+  url: 'https://warehouse-manage-server.vercel.app/',
   baseURL: import.meta.env.VITE_APP_BASE_API,
   timeout: 5000,
 })
