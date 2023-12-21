@@ -3,8 +3,8 @@ import { ElMessage } from 'element-plus'
 
 const request = axios.create({
   url:
-    import.meta.env.NODE_ENV === 'production'
-      ? import.meta.env.VITE_SERVE
+    process.env.VERCEL_ENV === 'production'
+      ? process.env.SERVER_URL
       : 'http://localhost:5000',
   baseURL: import.meta.env.VITE_APP_BASE_API,
   timeout: 5000,
