@@ -4,7 +4,7 @@
 
 ![首頁](https://github.com/FelixMitsui/warehouse-manage/blob/main/public/github_images/首頁.png?raw=true)
 
-![部屬網址](https://warehouse-manage.vercel.app/)
+部屬網址: https://warehouse-manage.vercel.app/
 
 ## 主要專案應用
 
