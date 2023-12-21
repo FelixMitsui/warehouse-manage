@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { ElMessage } from 'element-plus'
-console.log()
+
 const request = axios.create({
   url: import.meta.env.VITE_APP_BASE_API,
   baseURL: import.meta.env.VITE_SERVE,
