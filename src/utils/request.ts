@@ -2,7 +2,10 @@ import axios, { AxiosResponse } from 'axios'
 import { ElMessage } from 'element-plus'
 
 const request = axios.create({
-  url: import.meta.env.VITE_SERVE || 'http://localhost:5000',
+  url:
+    import.meta.env.NODE_ENV === 'production'
+      ? import.meta.env.VITE_SERVE
+      : 'http://localhost:5000',
   baseURL: import.meta.env.VITE_APP_BASE_API,
   timeout: 5000,
 })

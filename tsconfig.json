@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["vue-router", "@types/d3"],
+    "types": ["vue-router", "@types/d3", "node"],
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
