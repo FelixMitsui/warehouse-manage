@@ -5,6 +5,8 @@ import SearchBar from './SearchBar/index.vue'
 import Dialog from './Dialog/index.vue'
 import Logo from './Logo/index.vue'
 import BarChart from './BarChart/index.vue'
+import Form from './Form/index.vue'
+import Children from './Children/index.vue'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 const allGlobalComponent: any = {
@@ -15,6 +17,8 @@ const allGlobalComponent: any = {
   Dialog,
   Logo,
   BarChart,
+  Form,
+  Children,
 }
 
 export default {

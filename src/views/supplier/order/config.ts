@@ -8,13 +8,11 @@ export const TABLE_COL_ITEMS = [
   {
     label: '分類',
     prop: 'cid',
-    fixed: 'left',
     width: '100',
   },
   {
     label: '品名',
     prop: 'name',
-    fixed: 'left',
   },
   {
     label: '價格',
@@ -25,11 +23,16 @@ export const TABLE_COL_ITEMS = [
     label: '規格',
     prop: 'spec',
     width: '80',
+    default: '無',
   },
   {
     label: '創建時間',
     prop: 'create_at',
     width: '100',
+    method: (value: string): string => {
+      const date = new Date(value)
+      return date.toLocaleDateString()
+    },
   },
 ]
 

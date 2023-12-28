@@ -28,7 +28,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import useUserStore from '@/store/modules/user'
 import useLayOutSettingStore from '@/store/modules/setting'
@@ -65,5 +64,8 @@ export default {
 <style scoped>
 .el-dropdown {
   margin-left: 0.5rem;
+}
+.el-button {
+  margin: 0 0.2rem;
 }
 </style>

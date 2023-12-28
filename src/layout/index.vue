@@ -1,6 +1,6 @@
 <template>
   <div class="layout_container">
-    <!-- 側欄 -->
+    <!--left side content -->
     <div
       class="layout_slider"
       :class="{ fold: layOutSetting.fold ? true : false }"
@@ -13,10 +13,10 @@
         />
         倉儲管理
       </h1>
+      <!--menu list-->
       <el-scrollbar class="scrollbar">
-        <!--選單-->
         <el-menu
-          :default-active="$route.path"
+          :default-active="route.path"
           background-color="fff6e7"
           text-color="black"
           active-text-color="#FF8000"
@@ -27,7 +27,7 @@
         </el-menu>
       </el-scrollbar>
     </div>
-    <!-- 主要區域 -->
+    <!-- main content -->
     <div
       class="layout_main"
       :class="{ fold: layOutSetting.fold ? true : false }"
@@ -51,7 +51,7 @@ import useLayOutSettingStore from '@/store/modules/setting'
 import { debounce } from 'lodash'
 let userStore = useUserStore()
 let layOutSetting = useLayOutSettingStore()
-let $route = useRoute()
+let route = useRoute()
 
 onMounted(async () => {
   if (!userStore.email) {
@@ -129,11 +129,10 @@ export default {
     .layout_slider {
       width: $base-menu-width;
 
-      h1 {
+      & h1 {
         padding: 0.5rem;
         display: flex;
         text-align: center;
-
         img {
           margin-bottom: 0.5rem;
         }
@@ -142,7 +141,3 @@ export default {
   }
 }
 </style>
-
-<script setup lang="ts"></script>
-
-<style></style>

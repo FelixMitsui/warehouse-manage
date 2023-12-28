@@ -39,7 +39,13 @@ const useProductsStore = defineStore('Products', {
       return status
     },
   },
-  getters: {},
+  getters: {
+    productCount(state) {
+      state.products.forEach((product) => {
+        product.count = 1
+      })
+    },
+  },
 })
 
 export default useProductsStore

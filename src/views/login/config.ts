@@ -1,5 +1,8 @@
 export const RULE = {
-  email: [{ required: true, message: '不能為空', trigger: 'blur' }],
+  email: [
+    { required: true, message: '不能為空', trigger: 'blur' },
+    { type: 'email', message: '請輸入信箱格式', trigger: ['blur'] },
+  ],
   password: [
     { required: true, message: '不能為空', trigger: 'blur' },
     { min: 6, message: '不能小於6個字元', trigger: 'blur' },

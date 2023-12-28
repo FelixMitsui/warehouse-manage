@@ -4,34 +4,31 @@
     <el-row :gutter="20" justify="center">
       <el-col :span="12" :xs="0" :sm="12" :md="12" />
       <el-col :span="12" :xs="24" :sm="12" :md="12">
-        <el-form
-          label-width="80px"
-          class="login-form"
-          :model="loginForm"
-          :rules="RULE"
-        >
-          <el-form-item label="帳號" prop="email" ref="formValidateRef">
-            <el-input :prefix-icon="User" v-model="loginForm.email"></el-input>
-          </el-form-item>
-          <el-form-item label="密碼" prop="password">
-            <el-input
-              type="password"
-              :prefix-icon="Lock"
-              v-model="loginForm.password"
-              show-password
-            ></el-input>
-          </el-form-item>
-          <el-form-item>
+        <Form :formValue="formValue" :RULE="RULE">
+          <template #formArea="{ form }">
+            <el-form-item label="帳號" prop="email">
+              <el-input :prefix-icon="User" v-model="form.email"></el-input>
+            </el-form-item>
+            <el-form-item label="密碼" prop="password">
+              <el-input
+                type="password"
+                :prefix-icon="Lock"
+                v-model="form.password"
+                show-password
+              ></el-input>
+            </el-form-item>
+          </template>
+          <template #btnArea="{ form, validate, isLoading, onLoadStatus }">
             <el-button
-              :loading="loadingRef"
+              :loading="isLoading"
               type="primary"
               size="default"
-              @click="login"
+              @click="handleLogin(form, validate, onLoadStatus)"
             >
               確認
             </el-button>
-          </el-form-item>
-        </el-form>
+          </template>
+        </Form>
       </el-col>
     </el-row>
   </div>
@@ -39,22 +36,23 @@
 
 <script setup lang="ts">
 import { User, Lock } from '@element-plus/icons-vue'
-import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import useUserStore from '@/store/modules/user'
 import { ElNotification } from 'element-plus'
-import { RULE } from './constants'
+import { RULE } from './config'
 const userStore = useUserStore()
 let $router = useRouter()
-const formValidateRef = ref()
-let loadingRef = ref(false)
-let loginForm = reactive({ email: 'normal01@gmail.com', password: 'g111111' })
+let formValue = { email: 'normal01@gmail.com', password: 'g111111' }
 
-const login = async () => {
-  await formValidateRef.value.validate()
-  loadingRef.value = true
+const handleLogin = async (
+  form: { email: string; password: string },
+  validate: () => boolean,
+  onLoadStatus: (bool: boolean) => void,
+) => {
+  await validate()
+  onLoadStatus(true)
   try {
-    const result = await userStore.reqLogin(loginForm)
+    const result = await userStore.reqLogin(form)
 
     ElNotification({
       type: 'success',
@@ -66,10 +64,8 @@ const login = async () => {
     } else {
       $router.push({ path: '/' })
     }
-  } catch (err) {
-    console.log(err)
   } finally {
-    loadingRef.value = false
+    onLoadStatus(false)
   }
 }
 </script>
@@ -82,31 +78,43 @@ const login = async () => {
   background: url('@/assets/images/login_background.png') no-repeat;
   background-color: $theme-color;
   background-size: contain;
-}
 
-.login-form {
-  padding: 1rem;
-  margin: 0 auto;
-  max-width: 480px;
-  width: 100%;
-  position: relative;
-  top: 30vh;
-  border-radius: 0.5rem;
-  background: rgba(#4db3b3, 0.7);
-
-  button {
+  .el-form {
+    padding: 1rem;
+    margin: 0 auto;
+    max-width: 480px;
     width: 100%;
-    background: #00aeae;
-    &:hover {
-      background: #08c5c5;
+    position: relative;
+    top: 30vh;
+    border-radius: 0.5rem;
+    background: rgba(#4db3b3, 0.5);
+
+    .el-form-item {
+      width: 100%;
+      .el-form-item__error {
+        background: white;
+        padding: 0.1rem;
+        margin: 0.1rem;
+      }
+      .el-form-item__content {
+        margin-left: 0.5rem;
+      }
+
+      .el-form-item__label {
+        justify-content: center;
+        padding: 0;
+        font-weight: 800;
+        font-size: 1rem;
+        color: white;
+      }
     }
-  }
-  .el-form-item__label {
-    justify-content: center;
-    padding: 0;
-    font-weight: 800;
-    font-size: 1rem;
-    color: white;
+    button {
+      width: 100%;
+      background: #00aeae;
+      &:hover {
+        background: #08c5c5;
+      }
+    }
   }
 }
 </style>

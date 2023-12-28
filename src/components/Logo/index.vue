@@ -1,8 +1,8 @@
 <template>
-  <div class="logo">
+  <div>
     <svg width="150" height="70" xmlns="http://www.w3.org/2000/svg">
       <rect
-        v-for="(item, index) in items"
+        v-for="(item, index) in logoValue"
         :key="index"
         :x="item.x * item.width"
         :y="item.y"
@@ -11,13 +11,21 @@
         :fill="item.color"
         stroke="white"
         stroke-width="1"
-        :class="{ show: item.color == 'white' }"
+        :class="{ show: item.color === 'white' }"
       />
     </svg>
   </div>
 </template>
 <script lang="ts" setup>
+import { onMounted, ref } from 'vue'
 const colorCache = new Map()
+const logoValue = ref<Array<{
+  x: number
+  y: number
+  color: string
+  width: number
+  height: number
+}> | null>(null)
 
 const shouldColorBeWhite = (x: number, y: number) => {
   const cacheKey = `${x}-${y}`
@@ -66,6 +74,20 @@ const createItems = () => {
   return items
 }
 
-const items = createItems()
+onMounted(() => {
+  logoValue.value = createItems()
+})
 </script>
-<style lang="scss"></style>
+<style scoped lang="scss">
+.show {
+  animation: change-color 2s ease-in-out;
+}
+@keyframes change-color {
+  0% {
+    fill: #009cad;
+  }
+  100% {
+    fill: white;
+  }
+}
+</style>

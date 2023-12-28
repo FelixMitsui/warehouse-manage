@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="tableData" style="width: 100%">
+  <el-table :data="tableData">
     <el-table-column
       v-for="(table, key) in tableColItems"
       :key="key"
@@ -47,11 +47,27 @@
         </template>
         <!-- default -->
         <template v-else>
-          <template v-if="scope.row[table.prop] !== undefined">
-            {{ render(scope.row[table.prop], table.prop) }}
+          <template v-if="scope.row[table.prop]">
+            <template v-if="table.transform">
+              {{ table.transform[scope.row[table.prop]] }}
+            </template>
+            <template v-else-if="table.method">
+              {{ table.method(scope.row[table.prop]) }}
+            </template>
+            <template v-else>
+              {{ scope.row[table.prop] }}
+            </template>
           </template>
+          <!-- if there is a default value or value is nested properties -->
           <template v-else>
-            {{ scope.row[table.prop.split('.')[0]][table.prop.split('.')[1]] }}
+            <template v-if="table.default">
+              {{ table.default }}
+            </template>
+            <template v-else>
+              {{
+                scope.row[table.prop.split('.')[0]][table.prop.split('.')[1]]
+              }}
+            </template>
           </template>
         </template>
       </template>
@@ -63,51 +79,38 @@
       align="center"
     >
       <template #default="scope">
-        <slot :row="scope.row" :index="scope.$index"></slot>
+        <slot
+          :row="scope.row"
+          :index="scope.$index"
+          :editRow="editRowRef"
+          :handleEdit="handleEdit"
+        ></slot>
       </template>
     </el-table-column>
   </el-table>
 </template>
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { defineProps, ref } from 'vue'
 
-defineProps([
-  'tableData',
-  'tableColItems',
-  'settingLabel',
-  'settingWidth',
-  'editRowRef',
-])
+defineProps(['tableData', 'tableColItems', 'settingLabel', 'settingWidth'])
 
-const render = (value: number | string | any[], propName: any) => {
-  if (value === undefined) {
-    return value
-  }
-  if (Array.isArray(value)) {
-    if (propName === 'products') {
-      const count = value.reduce((total, current) => total + current.count, 0)
-      return count
-    }
-    return value.length === 0 ? '無' : value
-  } else if (propName === 'status') {
-    return value === 0 ? '未完成' : '已完成'
-  } else if (propName === 'create_at' || propName === 'shipping_date') {
-    const date = new Date(value)
-    return date.toLocaleDateString()
+const editRowRef = ref<number | null>(null)
+
+const handleEdit = (id: number | null) => {
+  if (id) {
+    editRowRef.value = id
   } else {
-    return value
+    editRowRef.value = null
   }
 }
 </script>
 
-<style lang="scss">
-.el-table {
-  padding: 1rem;
-  width: 100%;
+<style scope lang="scss">
+.el-table-column {
   display: flex;
   justify-content: center;
 }
-.el-table-column {
+.cell {
   display: flex;
   justify-content: center;
 }

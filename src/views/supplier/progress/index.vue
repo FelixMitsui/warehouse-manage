@@ -1,6 +1,12 @@
 <template>
   <el-row :gutter="20">
     <el-col :span="24">
+      <SearchBar
+        :SEARCH_OPTIONS="SEARCH_OPTIONS"
+        placeholder="請輸入搜尋內容"
+      />
+    </el-col>
+    <el-col :span="24">
       <Table
         :tableColItems="TABLE_COL_ITEMS"
         :tableData="restockValue.restocks"
@@ -29,7 +35,7 @@ import { useRouter } from 'vue-router'
 import useRestocksStore from '@/store/modules/restocks'
 import { Restock } from '@/api/restock/type'
 import { Product } from '@/api/product/type'
-import { TABLE_COL_ITEMS } from './constants'
+import { TABLE_COL_ITEMS, SEARCH_OPTIONS } from './config'
 const restocksStore = useRestocksStore()
 
 const router = useRouter()
@@ -74,10 +80,13 @@ const handleClick = () => {
 .el-row:last-child {
   margin-bottom: 0;
 }
-.el-col {
+.el-col:first-child {
+  padding: 0.5rem;
   border-radius: 4px;
+  .el-form {
+    justify-content: left;
+  }
 }
-
 .grid-content {
   display: flex;
   border-radius: 4px;

@@ -15,18 +15,15 @@ export const TABLE_COL_ITEMS = [
   {
     label: '編號',
     prop: 'id',
-    fixed: 'left',
     width: '80',
   },
   {
     label: '商品名',
     prop: 'name',
-    fixed: 'left',
   },
   {
     label: '分類',
     prop: 'cid',
-    fixed: 'left',
   },
   {
     label: '價格',
@@ -42,10 +39,20 @@ export const TABLE_COL_ITEMS = [
     label: '規格',
     prop: 'spec',
     width: '80',
+    default: '無',
   },
   {
     label: '創建時間',
     prop: 'create_at',
     width: '100',
+    method: (value: string): string => {
+      const date = new Date(value)
+      return date.toLocaleDateString()
+    },
   },
+]
+
+export const SEARCH_OPTIONS = [
+  { label: '商品名', value: 'name' },
+  { label: '分類', value: 'cid' },
 ]

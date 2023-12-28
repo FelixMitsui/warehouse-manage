@@ -1,11 +1,9 @@
 import router from './index'
 import nprogress from 'nprogress'
-
 import 'nprogress/nprogress.css'
-nprogress.configure({ showSpinner: false })
-
 import useUserStore from '@/store/modules/user'
 import pinia from '@/store'
+nprogress.configure({ showSpinner: false })
 const userStore = useUserStore(pinia)
 
 router.beforeEach(async (to, from, next) => {
@@ -24,12 +22,12 @@ router.beforeEach(async (to, from, next) => {
       if (userStore.email !== '') {
         next()
       } else {
+        // refresh page lost data, request api again.
         try {
           await userStore.reqAuth()
 
           next({ ...to })
         } catch (error) {
-          console.log(error)
           userStore.reqLogout()
           next({ path: '/login', query: { redirect: to.path } })
         }

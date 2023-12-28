@@ -28,7 +28,10 @@ const handleClose = () => {
   dialogFormVisible.value = false
 }
 </script>
-<style scoped>
+<style lang="scss">
+.el-dialog {
+  --el-dialog-width: 90%;
+}
 .el-button--text {
   margin-right: 15px;
 }
@@ -37,5 +40,23 @@ const handleClose = () => {
 }
 .el-input {
   width: 300px;
+}
+
+@media screen and (min-width: 768px) {
+  .el-dialog {
+    width: 70%;
+  }
+}
+
+@media screen and (min-width: 960px) {
+  .el-dialog {
+    width: 60%;
+  }
+}
+
+@media screen and (min-width: 1152px) {
+  .el-dialog {
+    width: 50%;
+  }
 }
 </style>

@@ -24,11 +24,6 @@ import Setting from './Setting/index.vue'
 
 let useLayOutSetting = useLayOutSettingStore()
 </script>
-<script lang="ts">
-export default {
-  name: 'Header',
-}
-</script>
 <style scoped lang="scss">
 .header {
   width: 100%;
@@ -51,13 +46,15 @@ export default {
       justify-content: center;
       align-items: center;
       padding: 0.5rem;
+      align-self: center;
     }
   }
   .header_right {
     padding: 0.5rem;
     display: flex;
-    justify-content: end;
+    justify-content: center;
     align-items: center;
+    align-self: end;
   }
 
   @media screen and (min-width: 960px) {

@@ -15,11 +15,20 @@ request.interceptors.request.use((config) => {
   }
 
   if (config.method === 'get') {
+    // add Pagination properties
     const params = new URLSearchParams(location.search)
+    const firstQueryParam = params.entries().next().value
+    if (firstQueryParam) {
+      config.params = {
+        [firstQueryParam[0]]: firstQueryParam[1],
+      }
+    }
     config.params = {
+      ...config.params,
       _limit: params.get('_limit') || 5,
       _page: params.get('_page'),
     }
+    console.log(config.params)
   }
   return config
 })
@@ -30,6 +39,7 @@ interface CustomResponse {
 
 request.interceptors.response.use(
   (res) => {
+    //return only required fields
     return {
       data: res.data,
       status: res.status,

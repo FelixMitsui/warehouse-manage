@@ -32,7 +32,6 @@ export const TABLE_COL_ITEMS = [
   {
     label: '信箱',
     prop: 'email',
-    fixed: 'left',
   },
   {
     label: '用戶名',
@@ -59,5 +58,14 @@ export const TABLE_COL_ITEMS = [
     label: '創建時間',
     prop: 'create_at',
     width: '100',
+    method: (value: string): string => {
+      const date = new Date(value)
+      return date.toLocaleDateString()
+    },
   },
+]
+
+export const SEARCH_OPTIONS = [
+  { label: '信箱', value: 'email' },
+  { label: '用戶名', value: 'name' },
 ]

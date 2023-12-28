@@ -1,6 +1,6 @@
 <template>
   <template v-for="item in menuList" :key="item.path">
-    <!--没有子路由-->
+    <!--no sub route-->
     <template
       v-if="
         (!item.children || item.children[0].name == item.name) &&
@@ -38,6 +38,7 @@ defineProps(['menuList'])
 </script>
 <script lang="ts">
 export default {
+  // eslint-disable-next-line vue/no-reserved-component-names
   name: 'Menu',
 }
 </script>
