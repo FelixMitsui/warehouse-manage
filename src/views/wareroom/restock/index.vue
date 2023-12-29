@@ -80,10 +80,10 @@ const handleStock = async (index: any) => {
   const uid = new ShortUniqueId({ length: 10 })
   for (let i = 0; i < valueRaw[index].products.length; i++) {
     let j = 0
-    const count = valueRaw[index].products[i].count as number
+    const qty = valueRaw[index].products[i].qty as number
     const product = valueRaw[index].products[i]
 
-    while (j < count) {
+    while (j < qty) {
       let productValue = Object.assign(
         {},
         {

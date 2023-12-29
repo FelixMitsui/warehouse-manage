@@ -146,7 +146,8 @@ const handleDelete = async (id: number, handleClose: () => void) => {
   border-radius: 4px;
   min-height: 36px;
 }
-.primary-button {
-  background: $primary-button;
+.btn-group {
+  display: flex;
+  justify-content: center;
 }
 </style>

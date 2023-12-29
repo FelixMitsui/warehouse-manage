@@ -41,7 +41,7 @@ import useUserStore from '@/store/modules/user'
 import { ElNotification } from 'element-plus'
 import { RULE } from './config'
 const userStore = useUserStore()
-let $router = useRouter()
+let router = useRouter()
 let formValue = { email: 'normal01@gmail.com', password: 'g111111' }
 
 const handleLogin = async (
@@ -60,9 +60,9 @@ const handleLogin = async (
     })
 
     if (userStore.role === 'supplier') {
-      $router.push('/supplier')
+      router.push('/supplier')
     } else {
-      $router.push({ path: '/' })
+      router.push({ path: '/' })
     }
   } finally {
     onLoadStatus(false)

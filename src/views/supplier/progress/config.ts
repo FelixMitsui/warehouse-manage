@@ -9,11 +9,11 @@ export const TABLE_COL_ITEMS = [
     label: '進貨數',
     prop: 'products',
     method: (value: any): number => {
-      const count = value.reduce(
-        (total: number, current: any) => total + current.count,
+      const qty = value.reduce(
+        (total: number, current: any) => total + current.qty,
         0,
       )
-      return count
+      return qty
     },
   },
   {

@@ -14,17 +14,18 @@ export const TABLE_COL_ITEMS = [
     prop: 'products',
     width: '100',
     method: (value: any): number => {
-      const count = value.reduce(
-        (total: number, current: any) => total + current.count,
+      const qty = value.reduce(
+        (total: number, current: any) => total + current.qty,
         0,
       )
-      return count
+      return qty
     },
   },
   {
     label: '狀態',
     prop: 'status',
     width: '100',
+    transform: ['未完成', '完成'],
   },
   {
     label: '創建時間',

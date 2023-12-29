@@ -19,6 +19,10 @@
 3. 進貨申請、商品入庫。
 4. 庫存查詢、變更儲位。
 
+## ER Model
+
+![ER Model](https://github.com/FelixMitsui/warehouse-manage/blob/main/public/github_images/ERmodel.png?raw=true)
+
 ## 技術運用
 
 ### axios攔截器:

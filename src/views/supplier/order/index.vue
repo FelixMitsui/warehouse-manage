@@ -18,28 +18,30 @@
       </el-form-item>
     </template>
     <template #btnArea="{ form, validate }">
-      <Table
-        :tableColItems="TABLE_COL_ITEMS"
-        :tableData="orderValue.products"
-        settingLabel="進貨數"
-        settingWidth="150"
-      >
-        <template #default="{ row }">
-          <el-input-number
-            v-model="row.count"
-            :min="1"
-            :max="10"
-            size="small"
-          />
-        </template>
-      </Table>
-      <el-button
-        color="#00AEAE"
-        size="default"
-        @click="handleSubmit(form, validate)"
-      >
-        提交
-      </el-button>
+      <div class="btn-group">
+        <Table
+          :tableColItems="TABLE_COL_ITEMS"
+          :tableData="orderValue.products"
+          settingLabel="進貨數"
+          settingWidth="150"
+        >
+          <template #default="{ row }">
+            <el-input-number
+              v-model="row.qty"
+              :min="1"
+              :max="10"
+              size="small"
+            />
+          </template>
+        </Table>
+        <el-button
+          color="#00AEAE"
+          size="default"
+          @click="handleSubmit(form, validate)"
+        >
+          提交
+        </el-button>
+      </div>
     </template>
   </Form>
 </template>
@@ -110,7 +112,15 @@ const handleSubmit = async (
 </script>
 
 <style scoped lang="scss">
-.el-button {
-  margin: 1rem auto;
+.btn-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .el-button {
+    margin: 1rem auto;
+    align-self: center;
+  }
 }
 </style>

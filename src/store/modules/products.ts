@@ -42,7 +42,7 @@ const useProductsStore = defineStore('Products', {
   getters: {
     productCount(state) {
       state.products.forEach((product) => {
-        product.count = 1
+        product.qty = 1
       })
     },
   },

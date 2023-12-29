@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import type { FormData, UserData, User } from './type'
+import type { UserData, User } from './type'
 import { Response } from '../type'
 
 enum API {
@@ -10,7 +10,7 @@ enum API {
   USERS_URL = '/users',
 }
 
-export const reqLogin = (formData: FormData) =>
+export const reqLogin = (formData: Pick<User, 'email' | 'password'>) =>
   request.post<
     any,
     Response<

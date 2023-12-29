@@ -53,6 +53,7 @@ export const TABLE_COL_ITEMS = [
     checkboxList: CHECK_ITEMS,
     isEdit: true,
     width: '80',
+    default: '無',
   },
   {
     label: '創建時間',

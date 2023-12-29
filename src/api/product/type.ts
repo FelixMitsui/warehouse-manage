@@ -5,6 +5,6 @@ export interface Product {
   price: number
   spec: string | null
   discount: number
-  count?: number
+  qty?: number
   create_at: Date
 }

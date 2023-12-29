@@ -101,21 +101,18 @@ const handleSubmit = async (
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .el-row:last-child {
   margin-bottom: 0;
+  .el-form {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .el-col:first-child {
   padding: 0.5rem;
   border-radius: 4px;
-  .el-form {
-    justify-content: left;
-  }
-}
-
-.primary-button {
-  background: $primary-button;
 }
 
 .btn-group {

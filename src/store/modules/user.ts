@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { reqLogin, reqAuth } from '@/api/user'
-import type { FormData, User, UserData } from '@/api/user/type'
+import type { User, UserData } from '@/api/user/type'
 import { Response } from '@/api/type'
 import { UserState } from './types/userType'
 import { commonRoute, authRoute, otherRoute } from '@/router/routes'
@@ -19,7 +19,7 @@ const useUserStore = defineStore('User', {
     }
   },
   actions: {
-    async reqLogin(formData: FormData) {
+    async reqLogin(formData: Pick<User, 'email' | 'password'>) {
       const {
         data,
         status,
