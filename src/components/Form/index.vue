@@ -6,37 +6,48 @@
     :rules="RULE"
     label-width="80px"
   >
-    <slot name="formArea" :form="form"></slot>
+    <slot name="body" :form="form"></slot>
     <div class="footer">
       <slot
-        name="btnArea"
-        :form="form"
+        name="footer"
         :isLoading="isLoadingRef"
-        :validate="validRef?.validate"
-        :onLoadStatus="handleLoadStatus"
+        :handleSubmit="handleSubmit"
       ></slot>
     </div>
   </el-form>
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, Ref, reactive } from 'vue'
+import { ref, Ref, reactive } from 'vue'
 import { ElForm } from 'element-plus'
 
-const { formValue, RULE } = defineProps(['formValue', 'RULE'])
-
+const { formValue, RULE, callback, tableRow } = defineProps([
+  'formValue',
+  'RULE',
+  'callback',
+  'tableRow',
+])
+const emits = defineEmits(['onSubmit'])
 const form: any = reactive({ ...formValue })
 
 const validRef: Ref<typeof ElForm | null> = ref(null)
 
 const isLoadingRef = ref(false)
 
-const handleLoadStatus = (bool: boolean) => {
-  isLoadingRef.value = bool
+const handleSubmit = async () => {
+  isLoadingRef.value = true
+  const isValid = await validRef.value?.validate()
+  if (!isValid) {
+    isLoadingRef.value = false
+    return
+  }
+  emits('onSubmit', { form: { ...form }, tableRow: tableRow && tableRow })
+  callback && callback()
+  isLoadingRef.value = false
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .el-form {
   width: 100%;
   display: flex;

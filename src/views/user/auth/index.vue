@@ -8,9 +8,14 @@
       <Dialog name="新增用戶" title="新增用戶" :auth="userStore.auth & 1">
         <!-- dialog slot -->
         <template #default="slot">
-          <Form :formValue="{ auth: 0 }" :RULE="RULE">
+          <Form
+            :formValue="{ auth: 0 }"
+            :RULE="RULE"
+            @onSubmit="handleSubmit"
+            :callback="slot.handleClose"
+          >
             <!-- form slot -->
-            <template #formArea="{ form }">
+            <template #body="{ form }">
               <el-form-item label="信箱" prop="email">
                 <el-input v-model="form.email" />
               </el-form-item>
@@ -41,11 +46,12 @@
               </el-form-item>
             </template>
             <!-- form slot -->
-            <template #btnArea="{ form, validate }">
+            <template #footer="{ handleSubmit, isLoading }">
               <el-button @click="slot.handleClose">取消</el-button>
               <el-button
                 type="primary"
-                @click="handleSubmit(null, form, validate, slot.handleClose)"
+                :loading="isLoading"
+                @click="handleSubmit"
               >
                 確認
               </el-button>
@@ -62,7 +68,7 @@
         settingWidth="120"
       >
         <!-- table slot -->
-        <template #default="{ row, editRow, handleEdit }">
+        <template #default="{ tableRow, editRow, onEdit }">
           <Dialog
             name="刪除"
             title="是否確定刪除該筆資料?"
@@ -74,7 +80,7 @@
                 <el-button @click="handleClose">取消</el-button>
                 <el-button
                   type="primary"
-                  @click="handleDelete(row.id, handleClose)"
+                  @click="handleDelete(tableRow.id, handleClose)"
                 >
                   確認
                 </el-button>
@@ -85,8 +91,8 @@
             color="#00AEAE"
             size="small"
             :disabled="!(userStore.auth & 2)"
-            v-if="editRow !== row.id"
-            @click="handleEdit(row.id)"
+            v-if="editRow !== tableRow.id"
+            @click="onEdit(tableRow.id)"
           >
             編輯
           </el-button>
@@ -95,10 +101,10 @@
             size="small"
             v-else
             @click="
-              handleSave(handleEdit, {
-                id: row.id,
-                role: row.role,
-                auth: row.auth,
+              handleSave(onEdit, {
+                id: tableRow.id,
+                role: tableRow.role,
+                auth: tableRow.auth,
               })
             "
           >
@@ -135,48 +141,31 @@ const userValue: { users: User[]; totalCount: number } = reactive({
 })
 
 onMounted(async () => {
-  try {
-    await usersStore.reqUsers()
-    userValue.users = usersStore.users
-    userValue.totalCount = usersStore.totalCount as number
-  } catch (err) {
-    console.log(err)
-  }
+  await usersStore.reqUsers()
+  userValue.users = usersStore.users
+  userValue.totalCount = usersStore.totalCount as number
 })
 
 watch(
   () => router.currentRoute.value,
   async () => {
-    try {
-      await usersStore.reqUsers()
-      userValue.users = usersStore.users
-      userValue.totalCount = usersStore.totalCount as number
-    } catch (err) {
-      console.log(err)
-    }
+    await usersStore.reqUsers()
+    userValue.users = usersStore.users
+    userValue.totalCount = usersStore.totalCount as number
   },
 )
 
 const handleSave = async (
-  handleEdit: () => void,
+  onEdit: () => void,
   formData: Pick<User, 'id' | 'role' | 'auth'>,
 ) => {
-  handleEdit()
+  onEdit()
   await usersStore.updateUser(formData)
   ElMessage({ type: 'success', message: '更新成功' })
 }
-const handleSubmit = async (
-  index: number | null,
-  form: User,
-  validate: () => boolean,
-  handleClose: () => void,
-) => {
-  const isValid = await validate()
-  if (!isValid) return
-
+const handleSubmit = async ({ form }: { form: User }) => {
   const formValue = { ...form, create_at: new Date() }
   await usersStore.register(formValue)
-  handleClose()
   ElMessage({ type: 'success', message: '創建成功' })
 }
 

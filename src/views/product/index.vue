@@ -5,9 +5,13 @@
       <Dialog name="新增商品" :auth="usersStore.auth & 1">
         <!-- dialog slot -->
         <template #default="{ handleClose }">
-          <Form :formValue="{ spec: null }" :RULE="RULE">
-            <!-- form slot -->
-            <template #formArea="{ form }">
+          <Form
+            :formValue="{ spec: null }"
+            :RULE="RULE"
+            @onSubmit="handleSubmit"
+          >
+            <!-- form body  slot -->
+            <template #body="{ form }">
               <el-form-item label="商品名" prop="name">
                 <el-input v-model="form.name" />
               </el-form-item>
@@ -31,12 +35,13 @@
                 <el-input v-model="form.spec" />
               </el-form-item>
             </template>
-            <!-- form slot -->
-            <template #btnArea="{ form, validate }">
+            <!-- form footer slot -->
+            <template #footer="{ handleSubmit, isLoading }">
               <el-button @click="handleClose">取消</el-button>
               <el-button
                 type="primary"
-                @click="handleSubmit(null, form, validate, handleClose)"
+                :loading="isLoading"
+                @click="handleSubmit"
               >
                 確認
               </el-button>
@@ -52,7 +57,7 @@
         settingLabel="設定"
       >
         <!-- table slot -->
-        <template #default="{ row }">
+        <template #default="{ tableRow }">
           <Dialog
             name="刪除"
             title="是否要刪除該筆資料?"
@@ -63,7 +68,7 @@
                 <el-button @click="handleClose">取消</el-button>
                 <el-button
                   type="primary"
-                  @click="handleDelete(row.id, handleClose)"
+                  @click="handleDelete(tableRow.id, handleClose)"
                 >
                   確認
                 </el-button>
@@ -107,17 +112,9 @@ watch(
     productValue.totalCount = productsStore.totalCount as number
   },
 )
-const handleSubmit = async (
-  index: number | string | null,
-  form: Product,
-  validate: () => boolean,
-  handleClose: () => void,
-) => {
-  const isValid = await validate()
-  if (!isValid) return
+const handleSubmit = async ({ form }: { form: Product }) => {
   const formValue = { ...form, create_at: new Date() }
   await productsStore.createProduct(formValue)
-  handleClose()
   ElMessage({ type: 'success', message: '新增成功' })
 }
 
@@ -127,7 +124,7 @@ const handleDelete = async (id: number, handleClose: () => void) => {
   ElMessage({ type: 'success', message: '刪除成功' })
 }
 </script>
-<style lang="scss">
+<style scoped lang="scss">
 .el-row {
   margin-bottom: 20px;
 }

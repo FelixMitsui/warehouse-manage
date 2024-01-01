@@ -13,11 +13,11 @@
         settingLabel="設定"
         settingWidth="80"
       >
-        <template #default="{ row, index }">
+        <template #default="{ tableRow, index }">
           <el-button
             color="#00AEAE"
             size="default"
-            :disabled="Boolean(row.status)"
+            :disabled="Boolean(tableRow.status)"
             @click="handleStock(index)"
           >
             入庫
@@ -42,7 +42,7 @@ import { ElMessage } from 'element-plus'
 import { TABLE_COL_ITEMS, SEARCH_OPTIONS } from './config'
 const restocksStore = useRestocksStore()
 const stocksStore = useStocksStore()
-const $router = useRouter()
+const router = useRouter()
 const restockValue: { restocks: Restock<Product>[]; totalCount: number } =
   reactive({
     restocks: [],
@@ -50,25 +50,17 @@ const restockValue: { restocks: Restock<Product>[]; totalCount: number } =
   })
 
 onMounted(async () => {
-  try {
-    await restocksStore.getRestocks()
-    restockValue.restocks = restocksStore.restocks
-    restockValue.totalCount = restocksStore.totalCount as number
-  } catch (err) {
-    console.log(err)
-  }
+  await restocksStore.getRestocks()
+  restockValue.restocks = restocksStore.restocks
+  restockValue.totalCount = restocksStore.totalCount as number
 })
 
 watch(
-  () => $router.currentRoute.value,
+  () => router.currentRoute.value,
   async () => {
-    try {
-      await restocksStore.getRestocks()
-      restockValue.restocks = restocksStore.restocks
-      restockValue.totalCount = restocksStore.totalCount as number
-    } catch (err) {
-      console.log(err)
-    }
+    await restocksStore.getRestocks()
+    restockValue.restocks = restocksStore.restocks
+    restockValue.totalCount = restocksStore.totalCount as number
   },
 )
 

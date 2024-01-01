@@ -13,13 +13,18 @@
         settingLabel="功能"
         settingWidth="100"
       >
-        <template #default="{ row }">
+        <template #default="{ tableRow }">
           <Dialog name="變更儲位" title="當前欄位" :auth="userStore.auth & 2">
             <template #default="slot">
-              <Form :formValue="{ restock: StockArea.RESTOCK }">
-                <template #formArea="{ form }">
+              <Form
+                :formValue="{ restock: StockArea.RESTOCK }"
+                @onSubmit="handleSubmit"
+                :callback="slot.handleClose"
+                :tableRow="tableRow"
+              >
+                <template #body="{ form }">
                   <el-form-item label="當前儲位" :label-width="'140px'">
-                    {{ row.storage_id }}
+                    {{ tableRow.storage_id }}
                   </el-form-item>
                   <el-form-item label="儲位" :label-width="'140px'">
                     <el-select v-model="form.restock" placeholder="選擇儲位">
@@ -32,11 +37,12 @@
                     </el-select>
                   </el-form-item>
                 </template>
-                <template #btnArea="{ form }">
+                <template #footer="{ handleSubmit, isLoading }">
                   <el-button @click="slot.handleClose">取消</el-button>
                   <el-button
                     type="primary"
-                    @click="handleSubmit(form, row, slot.handleClose)"
+                    :loading="isLoading"
+                    @click="handleSubmit"
                   >
                     確認
                   </el-button>
@@ -82,26 +88,27 @@ watch(
   },
 )
 
-const handleSubmit = async (
-  form: { restock: StockArea },
-  row: Storage,
-  handleClose: () => void,
-) => {
-  if (row.storage_id === form.restock) {
+const handleSubmit = async ({
+  form,
+  tableRow,
+}: {
+  form: { restock: StockArea }
+  tableRow: Storage
+}) => {
+  if (tableRow.storage_id === form.restock) {
     ElMessage({ type: 'error', message: '無法選擇相同儲' })
     return
   } else {
     await stocksStore.updateStockStorage({
-      id: row.id,
+      id: tableRow.id,
       storage_id: form.restock,
     })
     ElMessage({ type: 'success', message: '儲位已變更' })
-    handleClose()
   }
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .el-row:last-child {
   margin-bottom: 0;
   .el-form {
@@ -113,11 +120,5 @@ const handleSubmit = async (
 .el-col:first-child {
   padding: 0.5rem;
   border-radius: 4px;
-}
-
-.btn-group {
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
 }
 </style>

@@ -4,8 +4,8 @@
     <el-row :gutter="20" justify="center">
       <el-col :span="12" :xs="0" :sm="12" :md="12" />
       <el-col :span="12" :xs="24" :sm="12" :md="12">
-        <Form :formValue="formValue" :RULE="RULE">
-          <template #formArea="{ form }">
+        <Form :formValue="formValue" :RULE="RULE" @onSubmit="handleLogin">
+          <template #body="{ form }">
             <el-form-item label="帳號" prop="email">
               <el-input :prefix-icon="User" v-model="form.email"></el-input>
             </el-form-item>
@@ -18,12 +18,12 @@
               ></el-input>
             </el-form-item>
           </template>
-          <template #btnArea="{ form, validate, isLoading, onLoadStatus }">
+          <template #footer="{ handleSubmit, isLoading }">
             <el-button
               :loading="isLoading"
               type="primary"
               size="default"
-              @click="handleLogin(form, validate, onLoadStatus)"
+              @click="handleSubmit"
             >
               確認
             </el-button>
@@ -44,33 +44,27 @@ const userStore = useUserStore()
 let router = useRouter()
 let formValue = { email: 'normal01@gmail.com', password: 'g111111' }
 
-const handleLogin = async (
-  form: { email: string; password: string },
-  validate: () => boolean,
-  onLoadStatus: (bool: boolean) => void,
-) => {
-  await validate()
-  onLoadStatus(true)
-  try {
-    const result = await userStore.reqLogin(form)
+const handleLogin = async ({
+  form,
+}: {
+  form: { email: string; password: string }
+}) => {
+  const result = await userStore.reqLogin(form)
 
-    ElNotification({
-      type: 'success',
-      message: `登入成功(${result})`,
-    })
+  ElNotification({
+    type: 'success',
+    message: `登入成功(${result})`,
+  })
 
-    if (userStore.role === 'supplier') {
-      router.push('/supplier')
-    } else {
-      router.push({ path: '/' })
-    }
-  } finally {
-    onLoadStatus(false)
+  if (userStore.role === 'supplier') {
+    router.push('/supplier')
+  } else {
+    router.push({ path: '/' })
   }
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .login-container {
   padding: 1rem;
   width: 100%;
@@ -79,7 +73,7 @@ const handleLogin = async (
   background-color: $theme-color;
   background-size: contain;
 
-  .el-form {
+  .el-form :deep {
     padding: 1rem;
     margin: 0 auto;
     max-width: 480px;
@@ -87,25 +81,23 @@ const handleLogin = async (
     position: relative;
     top: 30vh;
     border-radius: 0.5rem;
-    background: rgba(#4db3b3, 0.5);
+    background: rgba(#4db3b3, 0.7);
 
     .el-form-item {
+      justify-self: center;
       width: 100%;
-      .el-form-item__error {
-        background: white;
-        padding: 0.1rem;
-        margin: 0.1rem;
-      }
       .el-form-item__content {
-        margin-left: 0.5rem;
-      }
-
-      .el-form-item__label {
         justify-content: center;
+      }
+      .el-form-item__label {
         padding: 0;
-        font-weight: 800;
+        font-weight: 700;
         font-size: 1rem;
         color: white;
+      }
+      .el-form-item__error {
+        font-weight: 700;
+        color: rgb(255, 0, 0);
       }
     }
     button {

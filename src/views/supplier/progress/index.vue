@@ -14,12 +14,7 @@
         settingWidth="150"
       >
         <template #default>
-          <el-button
-            color="#00AEAE"
-            size="default"
-            disabled="true"
-            @click="handleClick"
-          >
+          <el-button color="#00AEAE" size="default" disabled="true">
             查看
           </el-button>
         </template>
@@ -46,32 +41,19 @@ const restockValue: { restocks: Restock<Product>[]; totalCount: number } =
   })
 
 onMounted(async () => {
-  try {
-    await restocksStore.getRestocks()
-    console.log(restocksStore.restocks)
-    restockValue.restocks = restocksStore.restocks
-    restockValue.totalCount = restocksStore.totalCount as number
-  } catch (err) {
-    console.log(err)
-  }
+  await restocksStore.getRestocks()
+  restockValue.restocks = restocksStore.restocks
+  restockValue.totalCount = restocksStore.totalCount as number
 })
 
 watch(
   () => router.currentRoute.value,
   async () => {
-    try {
-      await restocksStore.getRestocks()
-      restockValue.restocks = restocksStore.restocks
-      restockValue.totalCount = restocksStore.totalCount as number
-    } catch (err) {
-      console.log(err)
-    }
+    await restocksStore.getRestocks()
+    restockValue.restocks = restocksStore.restocks
+    restockValue.totalCount = restocksStore.totalCount as number
   },
 )
-
-const handleClick = () => {
-  console.log('click')
-}
 </script>
 <style lang="scss">
 .el-row {
@@ -91,8 +73,5 @@ const handleClick = () => {
   display: flex;
   border-radius: 4px;
   min-height: 36px;
-}
-.primary-button {
-  background: $primary-button;
 }
 </style>

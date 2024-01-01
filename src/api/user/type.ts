@@ -16,4 +16,3 @@ export interface User extends Supplier {
 export interface Supplier {
   supplier_name?: string
 }
-

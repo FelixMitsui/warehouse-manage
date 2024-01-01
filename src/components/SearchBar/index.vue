@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-4 container">
+  <div class="mt-4 container" style="width: 50%">
     <el-input
       v-model="inputRef"
       :placeholder="placeholder"
@@ -40,12 +40,10 @@ const handleSearch = () => {
 
 <style scoped lang="scss">
 .container {
-  margin: 1rem 0;
+  width: 50%;
+  margin: 0.5rem 0;
 }
 .input-with-select .el-input-group__prepend {
   background-color: var(--el-fill-color-blank);
-  .el-input {
-    width: 115px;
-  }
 }
 </style>

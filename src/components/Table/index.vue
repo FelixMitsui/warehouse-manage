@@ -80,10 +80,10 @@
     >
       <template #default="scope">
         <slot
-          :row="scope.row"
+          :tableRow="scope.row"
           :index="scope.$index"
           :editRow="editRowRef"
-          :handleEdit="handleEdit"
+          :onEdit="handleEdit"
         ></slot>
       </template>
     </el-table-column>

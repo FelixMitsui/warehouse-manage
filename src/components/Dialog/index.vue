@@ -30,7 +30,7 @@ const handleClose = () => {
 </script>
 <style lang="scss">
 .el-dialog {
-  --el-dialog-width: 90%;
+  width: 90%;
 }
 .el-button--text {
   margin-right: 15px;

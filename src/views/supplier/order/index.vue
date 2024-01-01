@@ -1,7 +1,7 @@
 <template>
-  <Form :formValue="formValue" :RULE="RULE">
+  <Form :formValue="formValue" :RULE="RULE" @onSubmit="handleSubmit">
     <!-- form slot -->
-    <template #formArea="{ form }">
+    <template #body="{ form }">
       <el-form-item label="負責人">
         <el-input v-model="form.principal_name" clearable disabled="true" />
       </el-form-item>
@@ -17,7 +17,7 @@
         />
       </el-form-item>
     </template>
-    <template #btnArea="{ form, validate }">
+    <template #footer="{ handleSubmit, isLoading }">
       <div class="btn-group">
         <Table
           :tableColItems="TABLE_COL_ITEMS"
@@ -25,9 +25,9 @@
           settingLabel="進貨數"
           settingWidth="150"
         >
-          <template #default="{ row }">
+          <template #default="{ tableRow }">
             <el-input-number
-              v-model="row.qty"
+              v-model="tableRow.qty"
               :min="1"
               :max="10"
               size="small"
@@ -37,7 +37,8 @@
         <el-button
           color="#00AEAE"
           size="default"
-          @click="handleSubmit(form, validate)"
+          :loading="isLoading"
+          @click="handleSubmit"
         >
           提交
         </el-button>
@@ -73,27 +74,20 @@ const orderValue: { products: Product[]; totalCount: number } = reactive({
 })
 
 onMounted(async () => {
-  try {
-    await productsStore.getProducts()
-    productsStore.productCount
-
-    orderValue.products = productsStore.products
-    orderValue.totalCount = productsStore.totalCount as number
-  } catch (err) {
-    console.log(err)
-  }
+  await productsStore.getProducts()
+  productsStore.productCount
+  orderValue.products = productsStore.products
+  orderValue.totalCount = productsStore.totalCount as number
 })
 
-const handleSubmit = async (
+const handleSubmit = async ({
+  form,
+}: {
   form: Pick<
     Restock<null>,
     'principal_name' | 'supplier_name' | 'shipping_date'
-  >,
-  validate: () => boolean,
-) => {
-  const isValid = await validate()
-
-  if (!isValid) return
+  >
+}) => {
   const formRaws = toRaw(form)
   const valueRaws = toRaw(orderValue)
   const combineData = {
