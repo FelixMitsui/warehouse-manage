@@ -44,7 +44,6 @@ export const TABLE_COL_ITEMS = [
     type: 'select',
     selectList: SELECT_OPTIONS,
     isEdit: true,
-    width: '130',
   },
   {
     label: '權限',

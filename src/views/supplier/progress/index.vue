@@ -9,7 +9,7 @@
     <el-col :span="24">
       <Table
         :tableColItems="TABLE_COL_ITEMS"
-        :tableData="restockValue.restocks"
+        :tableData="track.restocks"
         settingLabel="設定"
         settingWidth="150"
       >
@@ -19,7 +19,7 @@
           </el-button>
         </template>
       </Table>
-      <Pagination :totalCount="restockValue.totalCount" />
+      <Pagination :totalCount="track.totalCount" />
     </el-col>
   </el-row>
 </template>
@@ -34,7 +34,7 @@ import { TABLE_COL_ITEMS, SEARCH_OPTIONS } from './config'
 const restocksStore = useRestocksStore()
 
 const router = useRouter()
-const restockValue: { restocks: Restock<Product>[]; totalCount: number } =
+const track: { restocks: Restock<Product>[]; totalCount: number } =
   reactive({
     restocks: [],
     totalCount: 0,
@@ -42,16 +42,16 @@ const restockValue: { restocks: Restock<Product>[]; totalCount: number } =
 
 onMounted(async () => {
   await restocksStore.getRestocks()
-  restockValue.restocks = restocksStore.restocks
-  restockValue.totalCount = restocksStore.totalCount as number
+  track.restocks = restocksStore.restocks
+  track.totalCount = restocksStore.totalCount as number
 })
 
 watch(
   () => router.currentRoute.value,
   async () => {
     await restocksStore.getRestocks()
-    restockValue.restocks = restocksStore.restocks
-    restockValue.totalCount = restocksStore.totalCount as number
+    track.restocks = restocksStore.restocks
+    track.totalCount = restocksStore.totalCount as number
   },
 )
 </script>

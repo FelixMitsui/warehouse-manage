@@ -9,7 +9,7 @@
     <el-col :span="24">
       <Table
         :tableColItems="TABLE_COL_ITEMS"
-        :tableData="restockValue.restocks"
+        :tableData="track.restocks"
         settingLabel="設定"
         settingWidth="80"
       >
@@ -18,13 +18,13 @@
             color="#00AEAE"
             size="default"
             :disabled="Boolean(tableRow.status)"
-            @click="handleStock(index)"
+            @click="handleInventory(index)"
           >
             入庫
           </el-button>
         </template>
       </Table>
-      <Pagination :totalCount="restockValue.totalCount" />
+      <Pagination :totalCount="track.totalCount" />
     </el-col>
   </el-row>
 </template>
@@ -33,41 +33,40 @@
 import { onMounted, reactive, watch, toRaw } from 'vue'
 import { useRouter } from 'vue-router'
 import useRestocksStore from '@/store/modules/restocks'
-import useStocksStore from '@/store/modules/stocks'
-import { StockArea } from '@/api/stock/type'
+import useInventoriesStore from '@/store/modules/inventories'
+import { Location } from '@/api/inventory/type'
 import { Restock } from '@/api/restock/type'
 import { Product } from '@/api/product/type'
 import ShortUniqueId from 'short-unique-id'
 import { ElMessage } from 'element-plus'
 import { TABLE_COL_ITEMS, SEARCH_OPTIONS } from './config'
 const restocksStore = useRestocksStore()
-const stocksStore = useStocksStore()
+const inventoriesStore = useInventoriesStore()
 const router = useRouter()
-const restockValue: { restocks: Restock<Product>[]; totalCount: number } =
-  reactive({
-    restocks: [],
-    totalCount: 0,
-  })
+const track: { restocks: Restock<Product>[]; totalCount: number } = reactive({
+  restocks: [],
+  totalCount: 0,
+})
 
 onMounted(async () => {
   await restocksStore.getRestocks()
-  restockValue.restocks = restocksStore.restocks
-  restockValue.totalCount = restocksStore.totalCount as number
+  track.restocks = restocksStore.restocks
+  track.totalCount = restocksStore.totalCount as number
 })
 
 watch(
   () => router.currentRoute.value,
   async () => {
     await restocksStore.getRestocks()
-    restockValue.restocks = restocksStore.restocks
-    restockValue.totalCount = restocksStore.totalCount as number
+    track.restocks = restocksStore.restocks
+    track.totalCount = restocksStore.totalCount as number
   },
 )
 
-const handleStock = async (index: any) => {
-  const valueRaw = toRaw(restockValue.restocks)
+const handleInventory = async (index: any) => {
+  const valueRaw = toRaw(track.restocks)
 
-  const addStockPromises = []
+  const inventories = []
 
   const uid = new ShortUniqueId({ length: 10 })
   for (let i = 0; i < valueRaw[index].products.length; i++) {
@@ -83,20 +82,20 @@ const handleStock = async (index: any) => {
           name: product.name,
         },
       )
-      const stockEntry = {
-        barcode: uid.rnd(),
-        storage_id: StockArea.RESTOCK,
+      const inventoryEntry = {
+        barcode_id: uid.rnd(),
+        location_name: Location.RESTOCK,
         product: productValue,
       }
-      const addStockPromise = await stocksStore.createStock(stockEntry)
-      addStockPromises.push(addStockPromise)
+      const barcodeInfo = await inventoriesStore.createBarcode(inventoryEntry)
+      inventories.push(barcodeInfo)
 
       j++
     }
   }
 
   try {
-    const result = await Promise.all(addStockPromises)
+    const result = await Promise.all(inventories)
     if (result) {
       await restocksStore.updateRestockStatus(valueRaw[index].id as number)
       ElMessage({

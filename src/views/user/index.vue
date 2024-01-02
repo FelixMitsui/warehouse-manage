@@ -63,7 +63,7 @@
     <el-col :span="24">
       <Table
         :tableColItems="TABLE_COL_ITEMS"
-        :tableData="userValue.users"
+        :tableData="track.users"
         settingLabel="設定"
         settingWidth="120"
       >
@@ -96,23 +96,27 @@
           >
             編輯
           </el-button>
-          <el-button
-            color="#00AEAE"
-            size="small"
-            v-else
-            @click="
-              handleSave(onEdit, {
-                id: tableRow.id,
-                role: tableRow.role,
-                auth: tableRow.auth,
-              })
-            "
-          >
-            保存
-          </el-button>
+          <div class="edit-group" v-else>
+            <el-button
+              color="#00AEAE"
+              size="small"
+              @click="
+                handleSave(onEdit, {
+                  id: tableRow.id,
+                  role: tableRow.role,
+                  auth: tableRow.auth,
+                })
+              "
+            >
+              保存
+            </el-button>
+            <el-button color="#00AEAE" size="small" @click="onEdit">
+              取消
+            </el-button>
+          </div>
         </template>
       </Table>
-      <Pagination :totalCount="userValue.totalCount" />
+      <Pagination :totalCount="track.totalCount" />
     </el-col>
   </el-row>
 </template>
@@ -135,23 +139,23 @@ const usersStore = useUsersStore()
 const userStore = useUserStore()
 
 const router = useRouter()
-const userValue: { users: User[]; totalCount: number } = reactive({
+const track: { users: User[]; totalCount: number } = reactive({
   users: [],
   totalCount: 1,
 })
 
 onMounted(async () => {
   await usersStore.reqUsers()
-  userValue.users = usersStore.users
-  userValue.totalCount = usersStore.totalCount as number
+  track.users = usersStore.users
+  track.totalCount = usersStore.totalCount as number
 })
 
 watch(
   () => router.currentRoute.value,
   async () => {
     await usersStore.reqUsers()
-    userValue.users = usersStore.users
-    userValue.totalCount = usersStore.totalCount as number
+    track.users = usersStore.users
+    track.totalCount = usersStore.totalCount as number
   },
 )
 
@@ -189,13 +193,21 @@ const handleDelete = async (id: number, handleClose: () => void) => {
 .el-col:first-child {
   padding: 0.5rem;
   border-radius: 4px;
-  .el-form {
-    justify-content: left;
-  }
 }
 
 .btn-group {
   display: flex;
   justify-content: center;
+}
+.edit-group {
+  margin-left: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  :last-child {
+    margin-top: 0.2rem;
+    margin-left: 0;
+  }
 }
 </style>

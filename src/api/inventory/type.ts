@@ -1,4 +1,4 @@
-export enum StockArea {
+export enum Location {
   RESTOCK = 'RESTOCK',
   DELIVERY = 'DELIVERY',
   A01 = 'A01',
@@ -17,9 +17,9 @@ export interface Product {
   name: string
 }
 
-export interface Storage {
-  id?: number
-  barcode: string
-  storage_id: StockArea
+export interface Barcode {
+  id: number
+  barcode_id: string
+  location_name: Location
   product: Product
 }

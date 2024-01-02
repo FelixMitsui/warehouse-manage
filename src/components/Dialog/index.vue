@@ -28,7 +28,7 @@ const handleClose = () => {
   dialogFormVisible.value = false
 }
 </script>
-<style lang="scss">
+<style scoped lang="scss">
 .el-dialog {
   width: 90%;
 }

@@ -9,7 +9,7 @@
     <el-col :span="24">
       <Table
         :tableColItems="TABLE_COL_ITEMS"
-        :tableData="stockValue.stocks"
+        :tableData="track.inventories"
         settingLabel="功能"
         settingWidth="100"
       >
@@ -17,17 +17,17 @@
           <Dialog name="變更儲位" title="當前欄位" :auth="userStore.auth & 2">
             <template #default="slot">
               <Form
-                :formValue="{ restock: StockArea.RESTOCK }"
+                :formValue="{ location: Location.RESTOCK }"
                 @onSubmit="handleSubmit"
                 :callback="slot.handleClose"
                 :tableRow="tableRow"
               >
                 <template #body="{ form }">
                   <el-form-item label="當前儲位" :label-width="'140px'">
-                    {{ tableRow.storage_id }}
+                    {{ tableRow.location_name }}
                   </el-form-item>
                   <el-form-item label="儲位" :label-width="'140px'">
-                    <el-select v-model="form.restock" placeholder="選擇儲位">
+                    <el-select v-model="form.location" placeholder="選擇儲位">
                       <el-option
                         v-for="item in ['RESTOCK', 'A01', 'A02', 'A03']"
                         :key="item"
@@ -52,7 +52,7 @@
           </Dialog>
         </template>
       </Table>
-      <Pagination :totalCount="stockValue.totalCount" />
+      <Pagination :totalCount="track.totalCount" />
     </el-col>
   </el-row>
 </template>
@@ -60,31 +60,31 @@
 <script setup lang="ts">
 import { onMounted, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import useStocksStore from '@/store/modules/stocks'
-import { Storage, StockArea } from '@/api/stock/type'
+import useInventoriesStore from '@/store/modules/inventories'
+import useUserStore from '@/store/modules/user'
+import { Barcode, Location } from '@/api/inventory/type'
 import { ElMessage } from 'element-plus'
 import { TABLE_COL_ITEMS, SEARCH_OPTIONS } from './config'
-import useUserStore from '@/store/modules/user'
 const userStore = useUserStore()
-const stocksStore = useStocksStore()
+const inventoriesStore = useInventoriesStore()
 const router = useRouter()
-const stockValue: { stocks: Storage[]; totalCount: number } = reactive({
-  stocks: [],
+const track: { inventories: Barcode[]; totalCount: number } = reactive({
+  inventories: [],
   totalCount: 0,
 })
 
 onMounted(async () => {
-  await stocksStore.getStocks()
-  stockValue.stocks = stocksStore.stocks
-  stockValue.totalCount = stocksStore.totalCount as number
+  await inventoriesStore.getInventories()
+  track.inventories = inventoriesStore.inventories
+  track.totalCount = inventoriesStore.totalCount as number
 })
 
 watch(
   () => router.currentRoute.value,
   async () => {
-    await stocksStore.getStocks()
-    stockValue.stocks = stocksStore.stocks
-    stockValue.totalCount = stocksStore.totalCount as number
+    await inventoriesStore.getInventories()
+    track.inventories = inventoriesStore.inventories
+    track.totalCount = inventoriesStore.totalCount as number
   },
 )
 
@@ -92,16 +92,16 @@ const handleSubmit = async ({
   form,
   tableRow,
 }: {
-  form: { restock: StockArea }
-  tableRow: Storage
+  form: { location: Location }
+  tableRow: Barcode
 }) => {
-  if (tableRow.storage_id === form.restock) {
+  if (tableRow.barcode_id === form.location) {
     ElMessage({ type: 'error', message: '無法選擇相同儲' })
     return
   } else {
-    await stocksStore.updateStockStorage({
+    await inventoriesStore.updateInventoryLocation({
       id: tableRow.id,
-      storage_id: form.restock,
+      location_name: form.location,
     })
     ElMessage({ type: 'success', message: '儲位已變更' })
   }

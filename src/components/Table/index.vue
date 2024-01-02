@@ -110,6 +110,7 @@ const handleEdit = (id: number | null) => {
   display: flex;
   justify-content: center;
 }
+
 .cell {
   display: flex;
   justify-content: center;

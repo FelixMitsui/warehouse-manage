@@ -28,7 +28,6 @@ request.interceptors.request.use((config) => {
       _limit: params.get('_limit') || 5,
       _page: params.get('_page'),
     }
-    console.log(config.params)
   }
   return config
 })

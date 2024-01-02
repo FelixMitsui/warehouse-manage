@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="20">
     <el-col :span="24" class="header">
-      <SearchBar label="商品" placeholder="請輸入品名" />
+      <SearchBar placeholder="請輸入品名" :SEARCH_OPTIONS="SEARCH_OPTIONS" />
       <Dialog name="新增商品" :auth="usersStore.auth & 1">
         <!-- dialog slot -->
         <template #default="{ handleClose }">
@@ -9,6 +9,7 @@
             :formValue="{ spec: null }"
             :RULE="RULE"
             @onSubmit="handleSubmit"
+            :callback="handleClose"
           >
             <!-- form body  slot -->
             <template #body="{ form }">
@@ -34,6 +35,9 @@
               <el-form-item label="規格" prop="spec">
                 <el-input v-model="form.spec" />
               </el-form-item>
+              <el-form-item label="廠商" prop="supplier_name">
+                <el-input v-model="form.supplier_name" />
+              </el-form-item>
             </template>
             <!-- form footer slot -->
             <template #footer="{ handleSubmit, isLoading }">
@@ -53,7 +57,7 @@
     <el-col :span="24">
       <Table
         :tableColItems="TABLE_COL_ITEMS"
-        :tableData="productValue.products"
+        :tableData="track.products"
         settingLabel="設定"
       >
         <!-- table slot -->
@@ -77,7 +81,7 @@
           </Dialog>
         </template>
       </Table>
-      <Pagination :totalCount="productValue.totalCount" />
+      <Pagination :totalCount="track.totalCount" />
     </el-col>
   </el-row>
 </template>
@@ -89,27 +93,27 @@ import useProductsStore from '@/store/modules/products'
 import useUserStore from '@/store/modules/user'
 import { Product } from '@/api/product/type'
 import { ElMessage } from 'element-plus'
-import { TABLE_COL_ITEMS, SELECT_OPTIONS, RULE } from './config'
+import { TABLE_COL_ITEMS, SELECT_OPTIONS, SEARCH_OPTIONS, RULE } from './config'
 const productsStore = useProductsStore()
 const usersStore = useUserStore()
 const router = useRouter()
-const productValue: { products: Product[]; totalCount: number } = reactive({
+const track: { products: Product[]; totalCount: number } = reactive({
   products: [],
   totalCount: 0,
 })
 
 onMounted(async () => {
   await productsStore.getProducts()
-  productValue.products = productsStore.products
-  productValue.totalCount = productsStore.totalCount as number
+  track.products = productsStore.products
+  track.totalCount = productsStore.totalCount as number
 })
 
 watch(
   () => router.currentRoute.value,
   async () => {
     await productsStore.getProducts()
-    productValue.products = productsStore.products
-    productValue.totalCount = productsStore.totalCount as number
+    track.products = productsStore.products
+    track.totalCount = productsStore.totalCount as number
   },
 )
 const handleSubmit = async ({ form }: { form: Product }) => {

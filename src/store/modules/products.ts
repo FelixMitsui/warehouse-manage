@@ -18,7 +18,6 @@ const useProductsStore = defineStore('Products', {
     async getProducts() {
       const { data, status, totalCount }: Response<Product[]> =
         await reqGetProducts()
-
       this.products = data
       this.totalCount = totalCount
       return status

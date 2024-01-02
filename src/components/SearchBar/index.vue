@@ -1,12 +1,12 @@
 <template>
-  <div class="mt-4 container" style="width: 50%">
+  <div class="mt-4 container">
     <el-input
       v-model="inputRef"
       :placeholder="placeholder"
       class="input-with-select"
     >
       <template #prepend>
-        <el-select v-model="selectRef" placeholder="分類" style="width: 115px">
+        <el-select v-model="selectRef" placeholder="分類" style="width: auto">
           <el-option
             v-for="(item, index) in SEARCH_OPTIONS"
             :key="index"
@@ -40,7 +40,8 @@ const handleSearch = () => {
 
 <style scoped lang="scss">
 .container {
-  width: 50%;
+  width: 100%;
+  max-width: 300px;
   margin: 0.5rem 0;
 }
 .input-with-select .el-input-group__prepend {

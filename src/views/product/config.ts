@@ -10,6 +10,7 @@ export const RULE = {
   ],
   price: [{ required: true, message: '不能為空', trigger: 'blur' }],
   discount: [{ required: true, message: '不能為空', trigger: 'blur' }],
+  supplier_name: [{ required: true, message: '不能為空', trigger: 'blur' }],
 }
 export const TABLE_COL_ITEMS = [
   {
@@ -18,7 +19,7 @@ export const TABLE_COL_ITEMS = [
     width: '80',
   },
   {
-    label: '商品名',
+    label: '商品名稱',
     prop: 'name',
   },
   {
@@ -42,6 +43,10 @@ export const TABLE_COL_ITEMS = [
     default: '無',
   },
   {
+    label: '廠商',
+    prop: 'supplier_name',
+  },
+  {
     label: '創建時間',
     prop: 'create_at',
     width: '100',
@@ -53,6 +58,6 @@ export const TABLE_COL_ITEMS = [
 ]
 
 export const SEARCH_OPTIONS = [
-  { label: '商品名', value: 'name' },
+  { label: '商品名稱', value: 'name_like' },
   { label: '分類', value: 'cid' },
 ]

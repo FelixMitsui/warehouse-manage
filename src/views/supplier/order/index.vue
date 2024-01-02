@@ -21,7 +21,7 @@
       <div class="btn-group">
         <Table
           :tableColItems="TABLE_COL_ITEMS"
-          :tableData="orderValue.products"
+          :tableData="track.products"
           settingLabel="進貨數"
           settingWidth="150"
         >
@@ -68,7 +68,7 @@ const formValue = {
   supplier_name: userStore.supplier_name as string,
   shipping_date: null,
 }
-const orderValue: { products: Product[]; totalCount: number } = reactive({
+const track: { products: Product[]; totalCount: number } = reactive({
   products: productsStore.products,
   totalCount: 1,
 })
@@ -76,8 +76,8 @@ const orderValue: { products: Product[]; totalCount: number } = reactive({
 onMounted(async () => {
   await productsStore.getProducts()
   productsStore.productCount
-  orderValue.products = productsStore.products
-  orderValue.totalCount = productsStore.totalCount as number
+  track.products = productsStore.products
+  track.totalCount = productsStore.totalCount as number
 })
 
 const handleSubmit = async ({
@@ -89,7 +89,7 @@ const handleSubmit = async ({
   >
 }) => {
   const formRaws = toRaw(form)
-  const valueRaws = toRaw(orderValue)
+  const valueRaws = toRaw(track)
   const combineData = {
     ...formRaws,
     products: [...valueRaws.products],

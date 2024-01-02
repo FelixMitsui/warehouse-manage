@@ -61,14 +61,13 @@ export const authRoute = [
     name: 'User',
     allows: ['admin'],
     meta: {
-      title: '用戶管理',
       hidden: false,
     },
     redirect: '/users',
     children: [
       {
         path: '/users',
-        component: () => import('@/views/user/auth/index.vue'),
+        component: () => import('@/views/user/index.vue'),
         name: 'User',
         allows: ['admin'],
         meta: {
@@ -85,9 +84,9 @@ export const authRoute = [
     name: 'Product',
     allows: ['admin'],
     meta: {
-      title: '商品管理',
       hidden: false,
     },
+    redirect: '/products',
     children: [
       {
         path: '/products',
@@ -103,7 +102,7 @@ export const authRoute = [
     ],
   },
   {
-    path: '/warerooms',
+    path: '/wareroom',
     component: () => import('@/layout/index.vue'),
     name: 'Wareroom',
     allows: ['admin', 'normal'],
@@ -112,10 +111,10 @@ export const authRoute = [
       hidden: false,
       icon: 'Shop',
     },
-    redirect: '/warerooms/stock',
+    redirect: '/wareroom/inventories',
     children: [
       {
-        path: '/warerooms/restock',
+        path: '/wareroom/restocks',
         component: () => import('@/views/wareroom/restock/index.vue'),
         name: 'Restock',
         allows: ['admin', 'normal'],
@@ -125,8 +124,8 @@ export const authRoute = [
         },
       },
       {
-        path: '/warerooms/stock',
-        component: () => import('@/views/wareroom/stock/index.vue'),
+        path: '/wareroom/inventories',
+        component: () => import('@/views/wareroom/inventory/index.vue'),
         name: 'Stock',
         allows: ['admin', 'normal'],
         meta: {
@@ -135,7 +134,7 @@ export const authRoute = [
         },
       },
       {
-        path: '/warerooms/delivery',
+        path: '/wareroom/delivery',
         component: () => import('@/views/wareroom/delivery/index.vue'),
         name: 'Delivery',
         allows: ['admin'],
