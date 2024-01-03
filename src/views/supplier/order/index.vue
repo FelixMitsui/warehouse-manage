@@ -18,12 +18,14 @@
       </el-form-item>
     </template>
     <template #footer="{ handleSubmit, isLoading }">
-      <div class="btn-group">
+      <div class="footer">
         <Table
           :tableColItems="TABLE_COL_ITEMS"
           :tableData="track.products"
           settingLabel="進貨數"
           settingWidth="150"
+          :isSelect="true"
+          ref="exposeValue"
         >
           <template #default="{ tableRow }">
             <el-input-number
@@ -48,7 +50,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, onMounted, toRaw } from 'vue'
+import { reactive, onMounted, toRaw, ref } from 'vue'
 import { Product } from '@/api/product/type'
 import { Restock } from '@/api/restock/type'
 import useUserStore from '@/store/modules/user'
@@ -57,6 +59,7 @@ import useRestocksStore from '@/store/modules/restocks'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { TABLE_COL_ITEMS, RULE } from './config'
+const exposeValue = ref<any>(null)
 const router = useRouter()
 const userStore = useUserStore()
 const productsStore = useProductsStore()
@@ -74,7 +77,7 @@ const track: { products: Product[]; totalCount: number } = reactive({
 })
 
 onMounted(async () => {
-  await productsStore.getProducts()
+  await productsStore.getProducts({ supplier_name: userStore.supplier_name })
   productsStore.productCount
   track.products = productsStore.products
   track.totalCount = productsStore.totalCount as number
@@ -88,11 +91,21 @@ const handleSubmit = async ({
     'principal_name' | 'supplier_name' | 'shipping_date'
   >
 }) => {
-  const formRaws = toRaw(form)
-  const valueRaws = toRaw(track)
+
+  const tableRow = JSON.parse(
+    JSON.stringify(exposeValue.value.selectedTableRowRef),
+  )
+
+  if (!tableRow.length) {
+    ElMessage({
+      type: 'error',
+      message: '請至少勾選一項商品',
+    })
+    return
+  }
   const combineData = {
-    ...formRaws,
-    products: [...valueRaws.products],
+    ...form,
+    products: tableRow,
     create_at: new Date(),
     status: 0,
   }
@@ -106,7 +119,8 @@ const handleSubmit = async ({
 </script>
 
 <style scoped lang="scss">
-.btn-group {
+.footer {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

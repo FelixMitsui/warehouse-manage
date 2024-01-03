@@ -105,6 +105,7 @@
                   id: tableRow.id,
                   role: tableRow.role,
                   auth: tableRow.auth,
+                  supplier_name: tableRow.supplier_name,
                 })
               "
             >
@@ -161,7 +162,7 @@ watch(
 
 const handleSave = async (
   onEdit: () => void,
-  formData: Pick<User, 'id' | 'role' | 'auth'>,
+  formData: Pick<User, 'id' | 'role' | 'auth' | 'supplier_name'>,
 ) => {
   onEdit()
   await usersStore.updateUser(formData)

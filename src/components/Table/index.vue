@@ -1,11 +1,13 @@
 <template>
-  <el-table :data="tableData">
+  <el-table :data="tableData" @selection-change="handleSelectionChange">
+    <el-table-column v-if="isSelect" type="selection" width="55" />
     <el-table-column
       v-for="(table, key) in tableColItems"
       :key="key"
       :fixed="table.fixed"
       :prop="table.prop"
       :label="table.label"
+      :type="table.type"
       :width="table.width"
       align="center"
     >
@@ -41,13 +43,18 @@
           <!-- input -->
           <el-input
             v-else
-            v-model="tableData[table.prop]"
+            v-model="scope.row[table.prop]"
             :value="scope.row[table.prop]"
           />
         </template>
         <!-- default -->
         <template v-else>
-          <template v-if="scope.row[table.prop]">
+          <template
+            v-if="
+              scope.row[table.prop] !== undefined &&
+              scope.row[table.prop] !== null
+            "
+          >
             <template v-if="table.transform">
               {{ table.transform[scope.row[table.prop]] }}
             </template>
@@ -92,8 +99,16 @@
 <script setup lang="ts">
 import { defineProps, ref } from 'vue'
 
-defineProps(['tableData', 'tableColItems', 'settingLabel', 'settingWidth'])
+const { tableData } = defineProps([
+  'tableData',
+  'tableColItems',
+  'settingLabel',
+  'settingWidth',
+  'isSelect',
+])
+const selectedTableRowRef = ref<any[]>([])
 
+defineExpose({ selectedTableRowRef })
 const editRowRef = ref<number | null>(null)
 
 const handleEdit = (id: number | null) => {
@@ -102,6 +117,9 @@ const handleEdit = (id: number | null) => {
   } else {
     editRowRef.value = null
   }
+}
+const handleSelectionChange = (val: any[]) => {
+  selectedTableRowRef.value = val
 }
 </script>
 

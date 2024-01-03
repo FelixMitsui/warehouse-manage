@@ -34,11 +34,10 @@ import { TABLE_COL_ITEMS, SEARCH_OPTIONS } from './config'
 const restocksStore = useRestocksStore()
 
 const router = useRouter()
-const track: { restocks: Restock<Product>[]; totalCount: number } =
-  reactive({
-    restocks: [],
-    totalCount: 0,
-  })
+const track: { restocks: Restock<Product>[]; totalCount: number } = reactive({
+  restocks: [],
+  totalCount: 0,
+})
 
 onMounted(async () => {
   await restocksStore.getRestocks()

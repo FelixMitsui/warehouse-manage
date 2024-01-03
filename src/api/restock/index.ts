@@ -8,7 +8,6 @@ enum API {
 }
 export const reqGetRestocks = () =>
   request.get<any, Response<Restock<Product>[]>>(API.RESTOCKS_URL)
-
 export const reqCreateRestock = (data: Restock<Product>) =>
   request.post<any, Response<null>>(API.RESTOCKS_URL, data)
 

@@ -42,7 +42,7 @@ const handleSubmit = async () => {
     return
   }
   emits('onSubmit', { form: { ...form }, tableRow: tableRow && tableRow })
-  //if callback exist action parent function prop
+  // if callback exist action parent function prop
   callback && callback()
   validRef.value?.resetFields()
   isLoadingRef.value = false

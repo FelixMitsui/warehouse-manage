@@ -30,7 +30,7 @@ export const reqRegister = (formData: User) =>
 export const reqUpdateUser = ({
   id,
   ...formData
-}: Pick<User, 'id' | 'role' | 'auth'>) =>
+}: Pick<User, 'id' | 'role' | 'auth' | 'supplier_name'>) =>
   request.patch<any, Response<User>>(`${API.USERS_URL}/${id}`, formData)
 export const reqUsers = () => request.get<any, Response<User[]>>(API.USERS_URL)
 export const reqDeleteUser = (id: number) =>

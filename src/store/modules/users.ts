@@ -24,7 +24,9 @@ const useUsersStore = defineStore('Users', {
       this.users.push(data.user)
       return status
     },
-    async updateUser(formData: Pick<User, 'id' | 'role' | 'auth'>) {
+    async updateUser(
+      formData: Pick<User, 'id' | 'role' | 'auth' | 'supplier_name'>,
+    ) {
       const { data, status }: Response<User> = await reqUpdateUser(formData)
       const targetIndex = this.users.findIndex(
         (item) => item.id === formData.id,

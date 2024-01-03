@@ -3,6 +3,7 @@ import {
   reqGetRestocks,
   reqCreateRestock,
   reqUpdateRestockStatus,
+  reqGetSupplierProducts,
 } from '@/api/restock'
 
 import type { Restock } from '@/api/restock/type'

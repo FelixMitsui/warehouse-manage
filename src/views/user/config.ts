@@ -46,6 +46,12 @@ export const TABLE_COL_ITEMS = [
     isEdit: true,
   },
   {
+    label: '廠商名稱',
+    prop: 'supplier_name',
+    default: '無',
+    isEdit: true,
+  },
+  {
     label: '權限',
     prop: 'auth',
     type: 'checkbox',

@@ -1,34 +1,24 @@
 <!-- parent.vue -->
 <template>
-  <Children>
-    <template v-slot="scoped">
-      <div>
-        {{ '父組件取得了' + scoped.letter }}
-        <br />
-      </div>
-    </template>
-  </Children>
+  <div>
+    {{ objRef }}
+    <el-button @click="handleClick"></el-button>
+  </div>
 </template>
 
 <script setup lang="ts">
+import { ref,toRaw } from 'vue'
 const obj: any = {
   fruit: '香蕉',
+  soup: '酸辣湯',
+  drink: '汽水',
 }
-const value = new Proxy(obj, {
-  get(target, prop, receiver) {
-    console.log('取得' + target[prop])
-    return target[prop]
-  },
-  set(target, prop, newValue, receiver) {
-    console.log(target[prop] + '變成了' + newValue)
-    target[prop] = newValue
-    return true
-  },
-})
-value.fruit = '鳳梨'
-const newValue = { ...value }
-console.log(newValue)
-console.log(value)
+const objRef = ref(obj)
+
+const handleClick = () => {
+  objRef.value.fruit = '西瓜'
+  console.log(toRaw(objRef.value))
+}
 </script>
 
 <style></style>
