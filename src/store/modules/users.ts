@@ -36,7 +36,7 @@ const useUsersStore = defineStore('Users', {
       }
       return status
     },
-    async deleteUser(id: number) {
+    async deleteUser(id: number | string) {
       const { status }: Response<User> = await reqDeleteUser(id)
       const targetIndex = this.users.findIndex((item) => item.id === id)
       if (targetIndex !== -1) {

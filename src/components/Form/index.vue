@@ -12,23 +12,26 @@
         name="footer"
         :isLoading="isLoadingRef"
         :handleSubmit="handleSubmit"
+        :form="form"
       ></slot>
     </div>
   </el-form>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends Object, U">
 import { ref, Ref, reactive } from 'vue'
 import { ElForm } from 'element-plus'
-
-const { formValue, RULE, callback, tableRow } = defineProps([
-  'formValue',
-  'RULE',
-  'callback',
-  'tableRow',
-])
-const emits = defineEmits(['onSubmit'])
-const form: any = reactive({ ...formValue })
+import { FormRules } from 'element-plus'
+const { formValue, RULE, callback, tableRow } = defineProps<{
+  formValue: T
+  tableRow?: U
+  RULE?: FormRules
+  callback?: () => void
+}>()
+const emits = defineEmits<{
+  onSubmit: [{ form: T; tableRow?: U }]
+}>()
+const form: any = reactive(formValue)
 
 const validRef: Ref<typeof ElForm | null> = ref(null)
 
@@ -41,7 +44,7 @@ const handleSubmit = async () => {
     isLoadingRef.value = false
     return
   }
-  emits('onSubmit', { form: { ...form }, tableRow: tableRow && tableRow })
+  emits('onSubmit', { form: { ...form }, tableRow: tableRow })
   // if callback exist action parent function prop
   callback && callback()
   validRef.value?.resetFields()

@@ -6,7 +6,7 @@
         <!-- dialog slot -->
         <template #default="{ handleClose }">
           <Form
-            :formValue="{ spec: null }"
+            :formValue="form"
             :RULE="RULE"
             @onSubmit="handleSubmit"
             :callback="handleClose"
@@ -94,9 +94,19 @@ import useUserStore from '@/store/modules/user'
 import { Product } from '@/api/product/type'
 import { ElMessage } from 'element-plus'
 import { TABLE_COL_ITEMS, SELECT_OPTIONS, SEARCH_OPTIONS, RULE } from './config'
+import Form from '@/components/Form/index.vue'
 const productsStore = useProductsStore()
 const usersStore = useUserStore()
 const router = useRouter()
+
+const form: Product = {
+  cid: '',
+  name: '',
+  price: Infinity,
+  spec: null,
+  discount: Infinity,
+  supplier_name: null,
+}
 const track: { products: Product[]; totalCount: number } = reactive({
   products: [],
   totalCount: 0,
@@ -116,7 +126,7 @@ watch(
     track.totalCount = productsStore.totalCount as number
   },
 )
-const handleSubmit = async ({ form }: { form: Product }) => {
+const handleSubmit = async ({ form }: { form: Product }): Promise<void> => {
   const formValue = { ...form, create_at: new Date() }
   await productsStore.createProduct(formValue)
   ElMessage({ type: 'success', message: '新增成功' })

@@ -1,14 +1,20 @@
 export const CHECK_ITEMS = [
-  { name: '新增', value: 1 },
-  { name: '修改', value: 2 },
-  { name: '刪除', value: 4 },
+  { label: '新增', value: 1 },
+  { label: '修改', value: 2 },
+  { label: '刪除', value: 4 },
 ]
 
 export const SELECT_OPTIONS = [
-  { name: '一般', category: 'normal' },
-  { name: '廠商', category: 'supplier' },
-  { name: '管理員', category: 'admin' },
+  { label: '一般', value: 'normal' },
+  { label: '廠商', value: 'supplier' },
+  { label: '管理員', value: 'admin' },
 ]
+
+export const SEARCH_OPTIONS = [
+  { label: '信箱', value: 'email' },
+  { label: '用戶名', value: 'name' },
+]
+
 export const RULE = {
   email: [
     { required: true, message: '不能為空', trigger: 'blur' },
@@ -71,7 +77,3 @@ export const TABLE_COL_ITEMS = [
   },
 ]
 
-export const SEARCH_OPTIONS = [
-  { label: '信箱', value: 'email' },
-  { label: '用戶名', value: 'name' },
-]

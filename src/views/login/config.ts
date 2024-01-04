@@ -1,7 +1,11 @@
 export const RULE = {
   email: [
     { required: true, message: '不能為空', trigger: 'blur' },
-    { type: 'email', message: '請輸入信箱格式', trigger: ['blur'] },
+    {
+      pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+      message: '請輸入信箱格式',
+      trigger: ['blur'],
+    },
   ],
   password: [
     { required: true, message: '不能為空', trigger: 'blur' },

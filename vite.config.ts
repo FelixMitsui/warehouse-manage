@@ -7,7 +7,11 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
   const env = loadEnv(mode, process.cwd())
   return {
     plugins: [
-      vue(),
+      vue({
+        script: {
+          propsDestructure: true,
+        },
+      }),
       viteMockServe({
         watchFiles: false,
         enable: command === 'serve',

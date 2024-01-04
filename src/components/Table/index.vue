@@ -21,8 +21,8 @@
             <el-option
               v-for="item in table.selectList"
               :key="item"
-              :label="item.name"
-              :value="item.category"
+              :label="item.label"
+              :value="item.value"
             />
           </el-select>
           <!-- checkbox -->
@@ -30,13 +30,13 @@
             <el-checkbox
               v-for="(item, key) in table.checkboxList"
               :key="key"
-              :label="item.name"
+              :label="item.label"
               @change="
                 () => {
-                  scope.row[table.prop] ^= item.value
+                  scope.row[table.prop] ^= item.value as number
                 }
               "
-              :checked="!!(scope.row[table.prop] & item.value)"
+              :checked="!!(scope.row[table.prop] & (item.value as number))"
               size="large"
             />
           </div>
@@ -96,30 +96,57 @@
     </el-table-column>
   </el-table>
 </template>
-<script setup lang="ts">
-import { defineProps, ref } from 'vue'
 
-const { tableData } = defineProps([
-  'tableData',
-  'tableColItems',
-  'settingLabel',
-  'settingWidth',
-  'isSelect',
-])
+<script setup lang="ts" generic="T extends Object">
+import { ref } from 'vue'
+
+interface TableColItem {
+  prop: string
+  label: string
+  fixed?: string
+  type?: string
+  width?: string
+  isEdit?: boolean
+  selectList?: Array<{ label: string; value: string | number }>
+  checkboxList?: Array<{ label: string; value: string | number }>
+  transform?: string[]
+  method?: (value: any) => any
+  default?: string
+}
+defineSlots<{
+  default({
+    tableRow,
+    index,
+    editRow,
+    onEdit,
+  }: {
+    tableRow: T
+    index: number
+    editRow: number | string | null
+    onEdit: (id?: number | string | null) => void
+  }): any
+}>()
+defineProps<{
+  tableData: T[]
+  tableColItems: TableColItem[]
+  settingLabel?: string
+  settingWidth?: string
+  isSelect?: boolean
+}>()
 const selectedTableRowRef = ref<any[]>([])
 
 defineExpose({ selectedTableRowRef })
-const editRowRef = ref<number | null>(null)
+const editRowRef = ref<number | string | null>(null)
 
-const handleEdit = (id: number | null) => {
+const handleEdit = (id?: number | string | null) => {
   if (id) {
     editRowRef.value = id
   } else {
     editRowRef.value = null
   }
 }
-const handleSelectionChange = (val: any[]) => {
-  selectedTableRowRef.value = val
+const handleSelectionChange = (value: any[]) => {
+  selectedTableRowRef.value = value
 }
 </script>
 

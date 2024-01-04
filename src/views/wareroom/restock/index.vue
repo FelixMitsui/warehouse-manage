@@ -40,6 +40,7 @@ import { Product } from '@/api/product/type'
 import ShortUniqueId from 'short-unique-id'
 import { ElMessage } from 'element-plus'
 import { TABLE_COL_ITEMS, SEARCH_OPTIONS } from './config'
+import Table from '@/components/Table/index.vue'
 const restocksStore = useRestocksStore()
 const inventoriesStore = useInventoriesStore()
 const router = useRouter()

@@ -4,13 +4,13 @@ export interface UserData<T> {
 }
 
 export interface User extends Supplier {
-  id: number
+  id?: number
   email: string
   name: string
   password: string
   auth: number
   role: string
-  create_at: Date
+  create_at?: Date
 }
 
 export interface Supplier {

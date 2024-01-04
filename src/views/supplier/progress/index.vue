@@ -31,6 +31,7 @@ import useRestocksStore from '@/store/modules/restocks'
 import { Restock } from '@/api/restock/type'
 import { Product } from '@/api/product/type'
 import { TABLE_COL_ITEMS, SEARCH_OPTIONS } from './config'
+import Table from '@/components/Table/index.vue'
 const restocksStore = useRestocksStore()
 
 const router = useRouter()

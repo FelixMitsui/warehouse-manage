@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref,toRaw } from 'vue'
+import { ref, toRaw } from 'vue'
 const obj: any = {
   fruit: '香蕉',
   soup: '酸辣湯',

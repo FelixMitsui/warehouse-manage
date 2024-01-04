@@ -39,5 +39,6 @@ module.exports = {
     'vue/script-setup-uses-vars': 'error', // Ensure that variables used in <script setup> are marked as used in <template>.
     'vue/no-mutating-props': 'off', // Allow mutating props.
     'vue/attribute-hyphenation': 'off', // Allow or disallow hyphenated attributes in Vue templates.
+    'vue/no-setup-props-destructure': 'off',
   },
 }

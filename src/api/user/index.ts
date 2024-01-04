@@ -33,5 +33,5 @@ export const reqUpdateUser = ({
 }: Pick<User, 'id' | 'role' | 'auth' | 'supplier_name'>) =>
   request.patch<any, Response<User>>(`${API.USERS_URL}/${id}`, formData)
 export const reqUsers = () => request.get<any, Response<User[]>>(API.USERS_URL)
-export const reqDeleteUser = (id: number) =>
+export const reqDeleteUser = (id: number | string) =>
   request.delete<any, Response<User>>(`${API.USERS_URL}/${id}`)

@@ -9,7 +9,7 @@
         <!-- dialog slot -->
         <template #default="slot">
           <Form
-            :formValue="{ auth: 0 }"
+            :formValue="form"
             :RULE="RULE"
             @onSubmit="handleSubmit"
             :callback="slot.handleClose"
@@ -30,8 +30,8 @@
                   <el-option
                     v-for="item in SELECT_OPTIONS"
                     :key="item"
-                    :label="item.name"
-                    :value="item.category"
+                    :label="item.label"
+                    :value="item.value"
                   />
                 </el-select>
               </el-form-item>
@@ -40,7 +40,7 @@
                   :key="index"
                   v-for="(item, index) in CHECK_ITEMS"
                   @change="() => (form.auth ^= item.value)"
-                  :label="item.name"
+                  :label="item.label"
                   size="large"
                 />
               </el-form-item>
@@ -80,7 +80,9 @@
                 <el-button @click="handleClose">取消</el-button>
                 <el-button
                   type="primary"
-                  @click="handleDelete(tableRow.id, handleClose)"
+                  @click="
+                    handleDelete(tableRow.id as string | number, handleClose)
+                  "
                 >
                   確認
                 </el-button>
@@ -92,7 +94,7 @@
             size="small"
             :disabled="!(userStore.auth & 2)"
             v-if="editRow !== tableRow.id"
-            @click="onEdit(tableRow.id)"
+            @click="onEdit(tableRow.id as string | number)"
           >
             編輯
           </el-button>
@@ -122,7 +124,9 @@
   </el-row>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
+import Form from '@/components/Form/index.vue'
+import Table from '@/components/Table/index.vue'
 import { onMounted, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import useUsersStore from '@/store/modules/users'
@@ -139,6 +143,13 @@ import {
 const usersStore = useUsersStore()
 const userStore = useUserStore()
 
+const form: User = {
+  email: '',
+  password: '',
+  name: '',
+  role: '',
+  auth: 0,
+}
 const router = useRouter()
 const track: { users: User[]; totalCount: number } = reactive({
   users: [],
@@ -168,13 +179,13 @@ const handleSave = async (
   await usersStore.updateUser(formData)
   ElMessage({ type: 'success', message: '更新成功' })
 }
-const handleSubmit = async ({ form }: { form: User }) => {
+const handleSubmit = async ({ form }: { form: User }): Promise<void> => {
   const formValue = { ...form, create_at: new Date() }
   await usersStore.register(formValue)
   ElMessage({ type: 'success', message: '創建成功' })
 }
 
-const handleDelete = async (id: number, handleClose: () => void) => {
+const handleDelete = async (id: number | string, handleClose: () => void) => {
   try {
     await usersStore.deleteUser(id)
     handleClose()

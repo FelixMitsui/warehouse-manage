@@ -15,7 +15,7 @@ const useProductsStore = defineStore('Products', {
     }
   },
   actions: {
-    async getProducts(query: any) {
+    async getProducts(query?: any) {
       const { data, status, totalCount }: Response<Product[]> =
         await reqGetProducts(query)
       this.products = data

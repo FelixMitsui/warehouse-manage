@@ -18,7 +18,7 @@ export interface Product {
 }
 
 export interface Barcode {
-  id: number
+  id?: number
   barcode_id: string
   location_name: Location
   product: Product

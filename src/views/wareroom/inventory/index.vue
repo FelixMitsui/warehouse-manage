@@ -17,7 +17,7 @@
           <Dialog name="變更儲位" title="當前欄位" :auth="userStore.auth & 2">
             <template #default="slot">
               <Form
-                :formValue="{ location: Location.RESTOCK }"
+                :formValue="form"
                 @onSubmit="handleSubmit"
                 :callback="slot.handleClose"
                 :tableRow="tableRow"
@@ -27,7 +27,10 @@
                     {{ tableRow.location_name }}
                   </el-form-item>
                   <el-form-item label="儲位" :label-width="'140px'">
-                    <el-select v-model="form.location" placeholder="選擇儲位">
+                    <el-select
+                      v-model="form.location_name"
+                      placeholder="選擇儲位"
+                    >
                       <el-option
                         v-for="item in ['RESTOCK', 'A01', 'A02', 'A03']"
                         :key="item"
@@ -65,9 +68,13 @@ import useUserStore from '@/store/modules/user'
 import { Barcode, Location } from '@/api/inventory/type'
 import { ElMessage } from 'element-plus'
 import { TABLE_COL_ITEMS, SEARCH_OPTIONS } from './config'
+import Form from '@/components/Form/index.vue'
+import Table from '@/components/Table/index.vue'
 const userStore = useUserStore()
 const inventoriesStore = useInventoriesStore()
 const router = useRouter()
+
+const form: Pick<Barcode, 'location_name'> = { location_name: Location.RESTOCK }
 const track: { inventories: Barcode[]; totalCount: number } = reactive({
   inventories: [],
   totalCount: 0,
@@ -92,16 +99,16 @@ const handleSubmit = async ({
   form,
   tableRow,
 }: {
-  form: { location: Location }
-  tableRow: Barcode
-}) => {
-  if (tableRow.barcode_id === form.location) {
+  form: Pick<Barcode, 'location_name'>
+  tableRow?: Barcode
+}): Promise<void> => {
+  if (tableRow?.barcode_id === form.location_name) {
     ElMessage({ type: 'error', message: '無法選擇相同儲' })
     return
   } else {
     await inventoriesStore.updateInventoryLocation({
-      id: tableRow.id,
-      location_name: form.location,
+      id: tableRow?.id,
+      location_name: form.location_name,
     })
     ElMessage({ type: 'success', message: '儲位已變更' })
   }

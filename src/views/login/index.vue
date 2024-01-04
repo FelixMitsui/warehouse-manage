@@ -4,7 +4,7 @@
     <el-row :gutter="20" justify="center">
       <el-col :span="12" :xs="0" :sm="12" :md="12" />
       <el-col :span="12" :xs="24" :sm="12" :md="12">
-        <Form :formValue="formValue" :RULE="RULE" @onSubmit="handleLogin">
+        <Form :formValue="form" :RULE="RULE" @onSubmit="handleLogin">
           <template #body="{ form }">
             <el-form-item label="帳號" prop="email">
               <el-input :prefix-icon="User" v-model="form.email"></el-input>
@@ -40,9 +40,10 @@ import { useRouter } from 'vue-router'
 import useUserStore from '@/store/modules/user'
 import { ElNotification } from 'element-plus'
 import { RULE } from './config'
+import Form from '@/components/Form/index.vue'
 const userStore = useUserStore()
 let router = useRouter()
-let formValue = { email: 'normal01@gmail.com', password: 'g111111' }
+let form = { email: 'normal01@gmail.com', password: 'g111111' }
 
 const handleLogin = async ({
   form,

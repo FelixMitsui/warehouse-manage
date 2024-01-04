@@ -1,6 +1,11 @@
 export const SELECT_OPTIONS = [
-  { category: '100100', name: '玩具' },
-  { category: '100200', name: '文具' },
+  { label: '100100', name: '玩具' },
+  { label: '100200', name: '文具' },
+]
+
+export const SEARCH_OPTIONS = [
+  { label: '商品名稱', value: 'name_like' },
+  { label: '分類', value: 'cid' },
 ]
 
 export const RULE = {
@@ -57,7 +62,3 @@ export const TABLE_COL_ITEMS = [
   },
 ]
 
-export const SEARCH_OPTIONS = [
-  { label: '商品名稱', value: 'name_like' },
-  { label: '分類', value: 'cid' },
-]

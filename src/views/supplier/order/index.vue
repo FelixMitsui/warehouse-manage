@@ -1,5 +1,5 @@
 <template>
-  <Form :formValue="formValue" :RULE="RULE" @onSubmit="handleSubmit">
+  <Form :formValue="form" :RULE="RULE" @onSubmit="handleSubmit">
     <!-- form slot -->
     <template #body="{ form }">
       <el-form-item label="負責人">
@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, onMounted, toRaw, ref } from 'vue'
+import { reactive, onMounted, ref } from 'vue'
 import { Product } from '@/api/product/type'
 import { Restock } from '@/api/restock/type'
 import useUserStore from '@/store/modules/user'
@@ -59,6 +59,8 @@ import useRestocksStore from '@/store/modules/restocks'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { TABLE_COL_ITEMS, RULE } from './config'
+import Form from '@/components/Form/index.vue'
+import Table from '@/components/Table/index.vue'
 const exposeValue = ref<any>(null)
 const router = useRouter()
 const userStore = useUserStore()
@@ -66,10 +68,13 @@ const productsStore = useProductsStore()
 const restocksStore = useRestocksStore()
 
 // default form value
-const formValue = {
+const form: Pick<
+  Restock<null>,
+  'principal_name' | 'supplier_name' | 'shipping_date'
+> = {
   principal_name: userStore.name,
   supplier_name: userStore.supplier_name as string,
-  shipping_date: null,
+  shipping_date: '',
 }
 const track: { products: Product[]; totalCount: number } = reactive({
   products: productsStore.products,
@@ -91,7 +96,6 @@ const handleSubmit = async ({
     'principal_name' | 'supplier_name' | 'shipping_date'
   >
 }) => {
-
   const tableRow = JSON.parse(
     JSON.stringify(exposeValue.value.selectedTableRowRef),
   )
