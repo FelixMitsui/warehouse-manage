@@ -83,10 +83,9 @@ export default {
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   .layout_slider {
     color: black;
-    height: 100vh;
     width: $base-menu-width;
     min-width: $base-menu-fixed-width;
     background: $theme-color;

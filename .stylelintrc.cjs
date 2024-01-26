@@ -6,7 +6,6 @@ module.exports = {
         'stylelint-config-recommended-vue/scss', // Use the recommended stylelint configuration for SCSS in Vue.
         'stylelint-config-recess-order',         // Use the Recess order configuration for stylelint, which defines the order of CSS properties.
         'stylelint-config-prettier',             // Use stylelint configuration that is compatible with Prettier, ensuring no conflicts between stylelint and Prettier.
-    ]
     ],
     overrides: [
         {

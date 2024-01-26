@@ -133,16 +133,6 @@ export const authRoute = [
           hidden: false,
         },
       },
-      {
-        path: '/wareroom/delivery',
-        component: () => import('@/views/wareroom/delivery/index.vue'),
-        name: 'Delivery',
-        allows: ['admin'],
-        meta: {
-          title: '出貨',
-          hidden: false,
-        },
-      },
     ],
   },
   {

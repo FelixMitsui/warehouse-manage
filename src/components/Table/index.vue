@@ -145,21 +145,27 @@ const handleEdit = (id?: number | string | null) => {
     editRowRef.value = null
   }
 }
-const handleSelectionChange = (value: any[]) => {
+const handleSelectionChange = (value: T[]) => {
   selectedTableRowRef.value = value
 }
 </script>
 
-<style scope lang="scss">
-.el-table-column {
-  display: flex;
-  justify-content: center;
+<style scoped lang="scss">
+.el-table :deep {
+  .el-table-column {
+    display: flex;
+   
+    justify-content: center;
+  }
+   .el-table__cell {
+    padding: 0.2rem 0.8rem;
+   }
+  .cell {
+    display: flex;
+    justify-content: center;
+  }
 }
 
-.cell {
-  display: flex;
-  justify-content: center;
-}
 .checkbox-container {
   display: flex;
   flex-direction: column;

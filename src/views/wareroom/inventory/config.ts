@@ -10,9 +10,9 @@ export const TABLE_COL_ITEMS = [
     width: '120',
   },
   {
-    label: '商品編號',
+    label: '編號',
     prop: 'product.pid',
-    width: '80',
+    width: '100',
   },
   {
     label: '商品名稱',

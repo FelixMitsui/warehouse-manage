@@ -3,7 +3,7 @@ export const TABLE_COL_ITEMS = [
     label: '編號',
     prop: 'id',
     fixed: 'left',
-    width: '100',
+    width: '80',
   },
   {
     label: '分類',

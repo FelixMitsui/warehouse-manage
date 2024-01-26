@@ -16,7 +16,6 @@ app.use(ElementPlus, {
 })
 app.use(pinia)
 app.use(globalComponent)
-app.use(ElementPlus)
 app.use(router)
 import '@/router/intercept'
 app.mount('#app')

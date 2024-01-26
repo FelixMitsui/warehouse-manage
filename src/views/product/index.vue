@@ -21,8 +21,8 @@
                   <el-option
                     v-for="item in SELECT_OPTIONS"
                     :key="item"
-                    :label="item.name"
-                    :value="item.category"
+                    :label="item.label"
+                    :value="item.name"
                   />
                 </el-select>
               </el-form-item>

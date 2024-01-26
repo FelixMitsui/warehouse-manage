@@ -1,6 +1,6 @@
 export const SELECT_OPTIONS = [
-  { label: '100100', name: '玩具' },
-  { label: '100200', name: '文具' },
+  { label: '玩具', name: '100100' },
+  { label: '文具', name: '100200' },
 ]
 
 export const SEARCH_OPTIONS = [
@@ -54,11 +54,10 @@ export const TABLE_COL_ITEMS = [
   {
     label: '創建時間',
     prop: 'create_at',
-    width: '100',
+    width: '120',
     method: (value: string): string => {
       const date = new Date(value)
       return date.toLocaleDateString()
     },
   },
 ]
-

@@ -1,3 +1,5 @@
+export const SEARCH_OPTIONS = [{ label: '廠商', value: 'supplier_name' }]
+
 export const TABLE_COL_ITEMS = [
   {
     label: '編號',
@@ -30,12 +32,10 @@ export const TABLE_COL_ITEMS = [
   {
     label: '創建時間',
     prop: 'create_at',
-    width: '100',
+    width: '120',
     method: (value: string): string => {
       const date = new Date(value)
       return date.toLocaleDateString()
     },
   },
 ]
-
-export const SEARCH_OPTIONS = [{ label: '廠商', value: 'supplier_name' }]

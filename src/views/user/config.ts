@@ -63,17 +63,16 @@ export const TABLE_COL_ITEMS = [
     type: 'checkbox',
     checkboxList: CHECK_ITEMS,
     isEdit: true,
-    width: '80',
+    width: '110',
     default: '無',
   },
   {
     label: '創建時間',
     prop: 'create_at',
-    width: '100',
+    width: '120',
     method: (value: string): string => {
       const date = new Date(value)
       return date.toLocaleDateString()
     },
   },
 ]
-

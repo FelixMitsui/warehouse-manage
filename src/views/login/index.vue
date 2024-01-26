@@ -43,7 +43,7 @@ import { RULE } from './config'
 import Form from '@/components/Form/index.vue'
 const userStore = useUserStore()
 let router = useRouter()
-let form = { email: 'normal01@gmail.com', password: 'g111111' }
+let form = { email: 'admin02@gmail.com', password: 'g111111' }
 
 const handleLogin = async ({
   form,
@@ -92,6 +92,7 @@ const handleLogin = async ({
       }
       .el-form-item__label {
         padding: 0;
+        margin-right: 0.2rem;
         font-weight: 700;
         font-size: 1rem;
         color: white;

@@ -25,7 +25,7 @@ module.exports = {
   rules: {
     'no-var': 'error', // Require the use of 'let' or 'const' instead of 'var'.
     'no-multiple-empty-lines': ['warn', { max: 1 }], // Disallow multiple empty lines.
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off', // Disallow the use of 'console' in production (enabled in development).
+    'no-console': 'off', // Disallow the use of 'console' in production (enabled in development).
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off', // Disallow the use of 'debugger' in production (enabled in development).
     'no-unexpected-multiline': 'error', // Disallow unexpected multiline expressions.
     'no-useless-escape': 'off', // Allow the use of unnecessary escape characters.

@@ -64,7 +64,7 @@ watch(
   },
 )
 
-const handleInventory = async (index: any) => {
+const handleInventory = async (index: number) => {
   const valueRaw = toRaw(track.restocks)
 
   const inventories = []
@@ -79,7 +79,7 @@ const handleInventory = async (index: any) => {
       let productValue = Object.assign(
         {},
         {
-          pid: product.id,
+          pid: product.id as number,
           name: product.name,
         },
       )
